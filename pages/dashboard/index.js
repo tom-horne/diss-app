@@ -4,7 +4,7 @@ import { gql } from 'graphql-request';
 import { graphQLClient } from '../../utils/graphql-client';
 
 
-const index = () => {
+const Dashboard = () => {
 
   const id = 1;
   const fetcher = async (query) => await graphQLClient({
@@ -54,4 +54,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Dashboard
