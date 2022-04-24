@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Button from '../Button/Button';
 
 const Outer = styled.header`
-  background: lightblue;
+  background: #332c2c;
 
 `;
 
@@ -16,7 +16,7 @@ const Outer = styled.header`
 const Wrapper = styled.div`
   /* height: ${props => props.isSearchOpen ? "100vh" : "150px"}; */
   max-height: 150px;
-  height: 150px;
+  height: 75px;
   /* min-height: 150px; */
   padding: 15px 20px;
   display: flex;

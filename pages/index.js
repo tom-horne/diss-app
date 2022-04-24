@@ -4,9 +4,9 @@ import { Container, Row, Col } from 'react-grid-system';
 
 export default function Home() {
   return (
-    <div>
+    <Container>
       Homepage
       <Link href="/dashboard">Dashboard</Link>
-    </div>
+    </Container>
   )
 }
