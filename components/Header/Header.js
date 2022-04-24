@@ -5,13 +5,13 @@ import Link from 'next/link';
 import NavItem from "../NavItem/NavItem";
 import Image from 'next/image'
 import Button from '../Button/Button';
+import { useSession, signIn, signOut } from "next-auth/react";
+
 
 const Outer = styled.header`
   background: #332c2c;
 
 `;
-
-
 
 const Wrapper = styled.div`
   /* height: ${props => props.isSearchOpen ? "100vh" : "150px"}; */
@@ -123,6 +123,9 @@ const HamburgerButton = {
 
 const Header = () => {
 
+  const { data: session } = useSession()
+  console.log(session);
+
   const [openDrawer, toggleDrawer] = useState(false);
   const toggleChecked = () => toggleDrawer(value => !value);
   const drawerRef = useRef(null);
@@ -145,7 +148,7 @@ const Header = () => {
                 {/* {data?.data.global?.navigation?.panels && data.data.global.navigation.panels.map(item => (
                   <NavItem item={item} />
                 ))} */}
-                <Button primary size="large" label="Login"/>
+                <Button primary size="large" label="Login" onClick={() => signIn()}/>
                 <Button size="large" label="Sign out"/>
               </NavItems>
 
