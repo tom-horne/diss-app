@@ -6,12 +6,12 @@ const Clicker = styled.button`
   font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
   border: 0;
-  border-radius: 3em;
+  border-radius: 0.75em;
   cursor: pointer;
   display: inline-block;
   line-height: 1;
-  margin-left: 5px;
-  background: ${props => props.primary ? "#1ea7fd" : "transparent"};
+  margin-left: 10px;
+  background: ${props => props.primary ? "#fd1e61" : "#eddada"};
   box-shadow: ${props => props.primary ? "none" : "rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset"};
   color: ${props => props.primary ? "white" : "#333"};
 

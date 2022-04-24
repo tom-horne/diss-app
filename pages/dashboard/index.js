@@ -2,6 +2,8 @@ import React from 'react'
 import useSWR from 'swr';
 import { gql } from 'graphql-request';
 import { graphQLClient } from '../../utils/graphql-client';
+import { Container, Row, Col } from 'react-grid-system';
+import Link from 'next/link';
 
 
 const Dashboard = () => {
@@ -39,18 +41,24 @@ const Dashboard = () => {
   console.log(error);
 
   return (
-    <div>
+    <Container>
       Dashboard
       {data ? <div>
         {data.usersPermissionsUser.data.attributes.events.data.map(event => (
-          <h2>
-            {event.attributes.Title}
-          </h2>
+          <Link href="dashboard/events/[id]" as={`dashboard/events/${id}`}>
+            <a>
+              <h2>
+                {event.attributes.Title}
+              </h2>
+            </a>
+
+          </Link>
+
         ))}
       </div> : <p>loading...</p> }
       
 
-    </div>
+    </Container>
   )
 }
 
