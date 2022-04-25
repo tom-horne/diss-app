@@ -42,21 +42,35 @@ const Dashboard = () => {
 
   return (
     <Container>
-      Dashboard
-      {data ? <div>
-        {data.usersPermissionsUser.data.attributes.events.data.map(event => (
-          <Link href="dashboard/events/[id]" as={`dashboard/events/${id}`}>
-            <a>
-              <h2>
-                {event.attributes.Title}
-              </h2>
-            </a>
+      <Row>
 
-          </Link>
+        <Col md={3}>
+          Left
+        </Col>
 
-        ))}
-      </div> : <p>loading...</p> }
-      
+        <Col md={6}>
+          Centre
+
+            {data ? <div>
+              {data.usersPermissionsUser.data.attributes.events.data.map(event => (
+                <Link href="dashboard/events/[id]" as={`dashboard/events/${id}`}>
+                  <a>
+                    <h2>
+                      {event.attributes.Title}
+                    </h2>
+                  </a>
+
+                </Link>
+
+            ))}
+          </div> : <p>loading...</p> }
+
+        </Col>
+
+        <Col md={3}>
+          Right
+        </Col>
+      </Row>
 
     </Container>
   )

@@ -11,8 +11,6 @@ const Outer = styled.header`
 
 `;
 
-
-
 const Wrapper = styled.div`
   /* height: ${props => props.isSearchOpen ? "100vh" : "150px"}; */
   max-height: 150px;
@@ -136,7 +134,7 @@ const Header = () => {
               <div>
                 <Link href="/">
                   <a>
-                    Logo
+                    SocialClub
                     {/* <Image src={logo} alt="Vercel Logo" width={103} height={94} /> */}
                   </a>
                 </Link>
