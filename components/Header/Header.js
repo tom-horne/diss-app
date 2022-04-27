@@ -140,6 +140,13 @@ const Header = () => {
                 </Link>
               </div>
               <NavItems>
+                <div>
+                  <Button primary size="large" label="Home"/>
+                  <Button primary size="large" label="Create"/>
+                  <Button primary size="large" label="Calendar"/>
+                  <Button primary size="large" label="Invites"/>
+                </div>
+                
                 {/* {data?.data.global?.navigation?.panels && data.data.global.navigation.panels.map(item => (
                   <NavItem item={item} />
                 ))} */}

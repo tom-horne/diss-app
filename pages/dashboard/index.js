@@ -4,41 +4,42 @@ import { gql } from 'graphql-request';
 import { graphQLClient } from '../../utils/graphql-client';
 import { Container, Row, Col } from 'react-grid-system';
 import Link from 'next/link';
+import EventCard from '../../components/EventCard/EventCard';
 
 
 const Dashboard = () => {
 
-  const id = 1;
-  const fetcher = async (query) => await graphQLClient({
-    query: query,
-    variables: {
-        id,
-    },
-  });
-  const query = gql`
-    query getUserEvents($id: ID) {
-      usersPermissionsUser(id: $id) {
-        data {
-          id
-          attributes{
-            username
-            email
-            events {
-              data {
-                attributes {
-                  Title
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
+  // const id = 1;
+  // const fetcher = async (query) => await graphQLClient({
+  //   query: query,
+  //   variables: {
+  //       id,
+  //   },
+  // });
+  // const query = gql`
+  //   query getUserEvents($id: ID) {
+  //     usersPermissionsUser(id: $id) {
+  //       data {
+  //         id
+  //         attributes{
+  //           username
+  //           email
+  //           events {
+  //             data {
+  //               attributes {
+  //                 Title
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // `;
 
-  const { data, error } = useSWR(() => id ? query : null, fetcher);
-  console.log(data);
-  console.log(error);
+  // const { data, error } = useSWR(() => id ? query : null, fetcher);
+  // console.log(data);
+  // console.log(error);
 
   return (
     <Container>
@@ -51,7 +52,9 @@ const Dashboard = () => {
         <Col md={6}>
           Centre
 
-            {data ? <div>
+          <EventCard/>
+
+            {/* {data ? <div>
               {data.usersPermissionsUser.data.attributes.events.data.map(event => (
                 <Link href="dashboard/events/[id]" as={`dashboard/events/${id}`}>
                   <a>
@@ -63,7 +66,7 @@ const Dashboard = () => {
                 </Link>
 
             ))}
-          </div> : <p>loading...</p> }
+          </div> : <p>loading...</p> } */}
 
         </Col>
 
