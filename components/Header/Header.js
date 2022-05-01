@@ -5,6 +5,7 @@ import Link from 'next/link';
 import NavItem from "../NavItem/NavItem";
 import Image from 'next/image'
 import Button from '../Button/Button';
+import { useSession, signIn, signOut } from "next-auth/client"
 import NavButton from "../Button/NavButton";
 
 const Outer = styled.header`
@@ -123,6 +124,9 @@ const HamburgerButton = {
 
 const Header = () => {
 
+  const [session, loading] = useSession()
+  console.log("session", session);
+
   const [openDrawer, toggleDrawer] = useState(false);
   const toggleChecked = () => toggleDrawer(value => !value);
   const drawerRef = useRef(null);
@@ -154,8 +158,8 @@ const Header = () => {
                 {/* {data?.data.global?.navigation?.panels && data.data.global.navigation.panels.map(item => (
                   <NavItem item={item} />
                 ))} */}
-                <Button primary size="large" label="Login"/>
-                <Button size="large" label="Sign out"/>
+                <Button primary size="large" label="Login" onClick={() => signIn()}/>
+                <Button size="large" label="Sign out" onClick={() => signOut()}/>
               </NavItems>
 
             {/* </Navrow> */}
