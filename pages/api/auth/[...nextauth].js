@@ -1,39 +1,62 @@
-import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import NextAuth from "next-auth"
+import Providers from 'next-auth/providers'
+import axios from 'axios'
 
 const options = {
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-  ],
-  database: process.env.NEXT_PUBLIC_DATABASE_URL,
-  session: {
-    jwt: true,
-  },
-  callbacks: {
-    session: async (session, user) => {
-      session.jwt = user.jwt;
-      session.id = user.id;
-      return Promise.resolve(session);
-    },
-    jwt: async (token, user, account) => {
-      const isSignIn = user ? true : false;
-      if (isSignIn) {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_STRAPI}/auth/${account.provider}/callback?access_token=${account?.accessToken}`
-        );
-        const data = await response.json();
-        token.jwt = data.jwt;
-        token.id = data.user.id;
-      }
-      return Promise.resolve(token);
-    },
-  },
-};
+    providers: [
+        Providers.Credentials({
+            name: 'Credentials',
+            credentials: {
+                email: { label: "Email", type: "text", placeholder: "test@test.com" },
+                password: {  label: "Password", type: "password" }
+            },
+            async authorize(credentials) {
+                try {
+                    const { data } = await axios.post(`${process.env.NEXT_PUBLIC_STRAPI}/api/auth/local`, {
+                        identifier: credentials.email,
+                        password: credentials.password
+                    });
+                    if (data) {
+                        return data;
+                    }
+                    else {
+                        return null;
+                    }
+                } catch (e) {
+                  const errorMessage = e.response.data.message
+                  // Redirecting to the login page with error message          in the URL
+                  console.log('caught error', errorMessage);
+                    throw new Error(errorMessage + '&email=' + credentials.email)
+                    return null;
+                }
+            }
+        })
+    ],
 
-const Auth = (req, res) =>
-  NextAuth(req, res, options);
 
-export default Auth;
+    session: {
+        jwt: true,
+    },
+
+    callbacks: {
+        // Getting the JWT token from API response
+        jwt: async (token, user, account) => {
+            const isSignIn = user ? true : false;
+            if (isSignIn) {
+                token.jwt = user.jwt;
+                token.id = user.user.id;
+                token.name = user.user.username;
+                token.email = user.user.email;
+            }
+            return Promise.resolve(token);
+        },
+
+        session: async (session, user) => {
+            session.jwt = user.jwt;
+            session.id = user.id;
+            return Promise.resolve(session);
+        },
+    }
+}
+
+export default (req, res) => NextAuth(req, res, options)
