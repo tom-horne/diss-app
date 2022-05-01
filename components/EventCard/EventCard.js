@@ -29,11 +29,11 @@ const EventCard = ({ data }) => {
 
   return (
     <>
-    <Link href="dashboard/events/[id]" as={`dashboard/events/${data.usersPermissionsUser.id}`}>
+    <Link href="dashboard/events/[id]" as={`dashboard/events/${data?.usersPermissionsUser?.id}`}>
         <StyledEventCard>
 
             {data ? <div>
-                {data.usersPermissionsUser.data.attributes.events.data.map(event => (
+                {data?.usersPermissionsUser?.data?.attributes?.events.data.map(event => (
                         
                     <a>
                         <h2>
