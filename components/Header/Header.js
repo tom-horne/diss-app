@@ -6,10 +6,10 @@ import NavItem from "../NavItem/NavItem";
 import Image from 'next/image'
 import Button from '../Button/Button';
 import { useSession, signIn, signOut } from "next-auth/client"
-
+import NavButton from "../Button/NavButton";
 
 const Outer = styled.header`
-  background: #332c2c;
+  background: #fffafa;
 
 `;
 
@@ -18,10 +18,11 @@ const Wrapper = styled.div`
   max-height: 150px;
   height: 75px;
   /* min-height: 150px; */
-  padding: 15px 20px;
+  /* padding: 15px 20px; */
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
 `;
 
 const NavItems = styled.ul`
@@ -139,12 +140,21 @@ const Header = () => {
               <div>
                 <Link href="/">
                   <a>
-                    Logo
+                    SocialClub
                     {/* <Image src={logo} alt="Vercel Logo" width={103} height={94} /> */}
                   </a>
                 </Link>
               </div>
+
+                <div>
+                  <NavButton label="Home"/>
+                  <NavButton label="Create"/>
+                  <NavButton label="Calendar"/>
+                  <NavButton label="Invites"/>
+                </div>
+
               <NavItems>
+                
                 {/* {data?.data.global?.navigation?.panels && data.data.global.navigation.panels.map(item => (
                   <NavItem item={item} />
                 ))} */}

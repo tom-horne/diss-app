@@ -4,6 +4,7 @@ import { gql } from 'graphql-request';
 import { graphQLClient } from '../../utils/graphql-client';
 import { Container, Row, Col } from 'react-grid-system';
 import Link from 'next/link';
+import EventCard from '../../components/EventCard/EventCard';
 
 
 const Dashboard = () => {
@@ -42,21 +43,23 @@ const Dashboard = () => {
 
   return (
     <Container>
-      Dashboard
-      {data ? <div>
-        {data.usersPermissionsUser.data.attributes.events.data.map(event => (
-          <Link href="dashboard/events/[id]" as={`dashboard/events/${id}`}>
-            <a>
-              <h2>
-                {event.attributes.Title}
-              </h2>
-            </a>
+      <Row>
 
-          </Link>
+        <Col md={3}>
+          Left
+        </Col>
 
-        ))}
-      </div> : <p>loading...</p> }
-      
+        <Col md={6}>
+          Centre
+
+          <EventCard data={data} />
+
+        </Col>
+
+        <Col md={3}>
+          Right
+        </Col>
+      </Row>
 
     </Container>
   )
