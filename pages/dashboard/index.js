@@ -4,9 +4,17 @@ import { gql } from 'graphql-request';
 import { graphQLClient } from '../../utils/graphql-client';
 import { Container, Row, Col } from 'react-grid-system';
 import { useSession, signIn, signOut } from "next-auth/client"
+import styled, { css } from 'styled-components';
+import Button from '../../components/Button/Button';
 import Link from 'next/link';
 import EventCard from '../../components/EventCard/EventCard';
 
+
+const New = styled.div`
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+`;
 
 const Dashboard = () => {
 
@@ -67,6 +75,14 @@ const Dashboard = () => {
           Right
         </Col>
       </Row>
+
+      <New>
+        <Link href="/dashboard/new">
+          <a>
+            <Button primary size="large" label="Create new event +" />
+          </a>
+        </Link>
+      </New>
 
     </Container>
   )
