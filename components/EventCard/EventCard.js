@@ -1,62 +1,52 @@
 import React from 'react'
-import useSWR from 'swr';
-import { gql } from 'graphql-request';
-import { graphQLClient } from '../../utils/graphql-client';
+// import useSWR from 'swr';
+// import { gql } from 'graphql-request';
+// import { graphQLClient } from '../../utils/graphql-client';
 import Link from 'next/link';
-import { StyledEventCard } from './StyledEventCard'
+import styled from 'styled-components';
 
-const EventCard = () => {
 
-    const id = 1;
-    const fetcher = async (query) => await graphQLClient({
-      query: query,
-      variables: {
-          id,
-      },
-    });
-    const query = gql`
-      query getUserEvents($id: ID) {
-        usersPermissionsUser(id: $id) {
-          data {
-            id
-            attributes{
-              username
-              email
-              events {
-                data {
-                  attributes {
-                    Title
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    `;
-  
-    const { data, error } = useSWR(() => id ? query : null, fetcher);
-    console.log(data);
-    console.log(error);
+export const StyledEventCard = styled.div`
+    width: 100%;
+    background-color: 'red';
+    /* height: 500px; */
+    padding: 10px;
+    /* border-style: solid; */
+    border-radius: 5px;
+    margin-top: 5px;
+    box-shadow: 0 0 5px #d0d0d0;
+    cursor: pointer;
+
+
+    h2 {
+        color: red;
+    }
+`
+
+
+
+const EventCard = ({ data }) => {
 
   return (
-    <StyledEventCard>
+    <>
+    <Link href="dashboard/events/[id]" as={`dashboard/events/${data.usersPermissionsUser.id}`}>
+        <StyledEventCard>
 
-        {data ? <div>
-              {data.usersPermissionsUser.data.attributes.events.data.map(event => (
-                <Link href="dashboard/events/[id]" as={`dashboard/events/${id}`}>
-                  <a>
-                    <h2>
-                      {event.attributes.Title}
-                    </h2>
-                  </a>
-
-                </Link>
+            {data ? <div>
+                {data.usersPermissionsUser.data.attributes.events.data.map(event => (
+                        
+                    <a>
+                        <h2>
+                        {event.attributes.Title}
+                        </h2>
+                    </a>
 
             ))}
           </div> : <p>loading...</p> }
 
-    </StyledEventCard>
+        </StyledEventCard>
+    </Link>
+</>
   )
 }
 

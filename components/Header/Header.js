@@ -5,9 +5,10 @@ import Link from 'next/link';
 import NavItem from "../NavItem/NavItem";
 import Image from 'next/image'
 import Button from '../Button/Button';
+import NavButton from "../Button/NavButton";
 
 const Outer = styled.header`
-  background: #332c2c;
+  background: #fffafa;
 
 `;
 
@@ -16,10 +17,11 @@ const Wrapper = styled.div`
   max-height: 150px;
   height: 75px;
   /* min-height: 150px; */
-  padding: 15px 20px;
+  /* padding: 15px 20px; */
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
 `;
 
 const NavItems = styled.ul`
@@ -139,13 +141,15 @@ const Header = () => {
                   </a>
                 </Link>
               </div>
-              <NavItems>
+
                 <div>
-                  <Button primary size="large" label="Home"/>
-                  <Button primary size="large" label="Create"/>
-                  <Button primary size="large" label="Calendar"/>
-                  <Button primary size="large" label="Invites"/>
+                  <NavButton label="Home"/>
+                  <NavButton label="Create"/>
+                  <NavButton label="Calendar"/>
+                  <NavButton label="Invites"/>
                 </div>
+
+              <NavItems>
                 
                 {/* {data?.data.global?.navigation?.panels && data.data.global.navigation.panels.map(item => (
                   <NavItem item={item} />
