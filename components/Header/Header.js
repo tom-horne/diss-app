@@ -157,8 +157,23 @@ const Header = () => {
                 {/* {data?.data.global?.navigation?.panels && data.data.global.navigation.panels.map(item => (
                   <NavItem item={item} />
                 ))} */}
-                <Button primary size="large" label="Login" onClick={() => signIn()}/>
-                <Button size="large" label="Sign out" onClick={() => signOut()}/>
+                {/* <Button primary size="large" label="Login" onClick={() => signIn()}/>
+                <Button size="large" label="Sign out" onClick={() => signOut()}/> */}
+                { session ? (
+                  <div className="multiButtons">
+                    <Button size="large" onClick={() => signOut()} label="Log out" />
+                    <Link href={`/[id]`} as={`/dashboard`}>
+                      <Button primary size="large" label="Home" />
+                    </Link>
+                  </div>
+            ) : (
+                  <div className="multiButtons">
+                    <Button primary size="large" onClick={() => signIn()} label="Log in" />
+                    {/* <Button primary size="small" onClick={() => loginWithRedirect({
+                      screen_hint: "signup",
+                    })} label="Sign Up" /> */}
+                  </div>
+            )}
               </NavItems>
 
             {/* </Navrow> */}

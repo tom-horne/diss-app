@@ -6,21 +6,17 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 
-export const StyledEventCard = styled.div`
+const StyledEventCard = styled.div`
     width: 100%;
-    background-color: 'red';
-    /* height: 500px; */
+    /* background: red; */
+    max-height: 500px;
     padding: 10px;
     /* border-style: solid; */
     border-radius: 5px;
     margin-top: 5px;
     box-shadow: 0 0 5px #d0d0d0;
     cursor: pointer;
-
-
-    h2 {
-        color: red;
-    }
+    margin: 2em 0;
 `
 
 
@@ -29,24 +25,18 @@ const EventCard = ({ data }) => {
 
   return (
     <>
-    <Link href="dashboard/events/[id]" as={`dashboard/events/${data?.usersPermissionsUser?.id}`}>
+      {data?.usersPermissionsUser?.data?.attributes?.events.data.map(event => (
         <StyledEventCard>
-
-            {data ? <div>
-                {data?.usersPermissionsUser?.data?.attributes?.events.data.map(event => (
-                        
-                    <a>
-                        <h2>
-                        {event.attributes.Title}
-                        </h2>
-                    </a>
-
-            ))}
-          </div> : <p>loading...</p> }
-
+                <Link href="dashboard/events/[id]" as={`dashboard/events/${event.id}`}>
+                  <a>
+                      <h2>
+                      {event.attributes.Title}
+                      </h2>
+                  </a>
+                </Link>
         </StyledEventCard>
-    </Link>
-</>
+      ))}
+    </>
   )
 }
 

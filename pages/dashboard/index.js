@@ -3,13 +3,16 @@ import useSWR from 'swr';
 import { gql } from 'graphql-request';
 import { graphQLClient } from '../../utils/graphql-client';
 import { Container, Row, Col } from 'react-grid-system';
+import { useSession, signIn, signOut } from "next-auth/client"
 import Link from 'next/link';
 import EventCard from '../../components/EventCard/EventCard';
 
 
 const Dashboard = () => {
 
-  const id = 1;
+  const [session, loading] = useSession()
+
+  const id = session?.id;
   const fetcher = async (query) => await graphQLClient({
     query: query,
     variables: {
@@ -26,6 +29,7 @@ const Dashboard = () => {
             email
             events {
               data {
+                id
                 attributes {
                   Title
                 }
@@ -52,8 +56,11 @@ const Dashboard = () => {
         <Col md={6}>
           Centre
 
-          <EventCard data={data} />
-
+          {data ? (
+            <EventCard data={data} />
+          ) : (
+            <p>loading</p>
+          )}
         </Col>
 
         <Col md={3}>
