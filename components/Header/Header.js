@@ -125,7 +125,6 @@ const HamburgerButton = {
 const Header = () => {
 
   const [session, loading] = useSession()
-  console.log("session", session);
 
   const [openDrawer, toggleDrawer] = useState(false);
   const toggleChecked = () => toggleDrawer(value => !value);
