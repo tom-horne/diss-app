@@ -5,6 +5,7 @@ import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from
 import styled, { css } from 'styled-components';
 import { graphQLClient } from '../../utils/graphql-client';
 import Button from '../Button/Button';
+import Search from '../Search/Search';
 import { Container, Row, Col } from 'react-grid-system';
 
 const Name = styled.input`
@@ -19,17 +20,23 @@ const Description = styled.textarea`
   font-size: 2em;
 `;
 
-const EditEvent = ({ defaultValues, id }) => {
+const EditEvent = ({ defaultValues, id, users }) => {
 
-    console.log(defaultValues);
+    const [Going, addGoing] = useState([])
 
     const methods = useForm({
         defaultValues: {
           ...defaultValues,
             title: defaultValues.data.attributes.title,
             description: defaultValues.data.attributes.description,
+            date: defaultValues.data.attributes.date,
+            time: defaultValues.data.attributes.time,
         },
         mode: "onChange",
+      });
+
+      const following = defaultValues?.data?.attributes?.going?.data.map(function (obj) {
+        return parseInt(obj.id);
       });
     
       useEffect(() => {
@@ -37,27 +44,33 @@ const EditEvent = ({ defaultValues, id }) => {
           ...defaultValues,
           title: defaultValues.data.attributes.title,
           description: defaultValues.data.attributes.description,
+          date: defaultValues.data.attributes.date,
+          time: defaultValues.data.attributes.time,
         });
+        addGoing(following)
       }, [reset, defaultValues]);
     
       const [errorMessage, setErrorMessage] = useState('');
-      const [recipeImage, changeRecipeImage] = useState();
     
     
       const { register, control, handleSubmit, reset, formState, errors } = methods
     
-      const onSubmit = handleSubmit(async ({ title, description }, data) => {
+      const onSubmit = handleSubmit(async ({ title, description, date, time }, data) => {
+
+        console.log("final Going", Going);
 
         if (errorMessage) setErrorMessage('');
 
         const query = gql`
-        mutation UpdateAnEvent($id: ID!, $title: String, $description: String) {
+        mutation UpdateAnEvent($id: ID!, $title: String, $description: String, $date: Date, $time: Time, $Going: [ID]) {
             updateEvent(
               id: $id
-                  data: {
-                title: $title
-                description:$description
-
+                data: {
+                    title: $title
+                    description: $description
+                    date: $date
+                    time: $time
+                    going: $Going
               }
             ) {
               data {
@@ -68,9 +81,12 @@ const EditEvent = ({ defaultValues, id }) => {
         `;
 
         const variables = {
-        id,
-        title,
-        description,
+            id,
+            title,
+            description,
+            date,
+            time,
+            Going
         };
 
         try {
@@ -83,12 +99,30 @@ const EditEvent = ({ defaultValues, id }) => {
     });
 
 
+    const selectionHandler = async (person) => {
+
+        if (Going.some(e => e == person)) {
+            const newArr = Going.filter(people => Number(person) != people);
+            addGoing(newArr);
+    
+        } else {
+            console.log('this');
+            let newObj = parseInt(person)
+            await addGoing(oldArray => [...oldArray, newObj]);
+        }
+
+        console.log(Going);
+      }
+
+      console.log(defaultValues?.data?.attributes?.going?.data);
+
+
   return (
     <Container>
+        <Row>
+      <Col md={6}>
         <FormProvider {...methods}>
         <form onSubmit={onSubmit}>
-            <Row>
-              <Col md={10}>
                 <Name
                   type="text"
                   name="title"
@@ -102,9 +136,22 @@ const EditEvent = ({ defaultValues, id }) => {
                   placeholder="description"
                   {...register('description', { required: true })}
                 />
+
+                <input 
+                    type="date"
+                    id="date" 
+                    name="date"
+                    {...register('date', { required: true })}
+                />
+
+                <input 
+                    type="time"
+                    id="time" 
+                    name="time"
+                    step="1"
+                    {...register('time', { required: true })}
+                />
                 
-              </Col>
-            </Row>
 
 
             {/* {errors.name &&  (
@@ -125,6 +172,18 @@ const EditEvent = ({ defaultValues, id }) => {
           </div>
         </form>
       </FormProvider>
+      </Col>
+      <Col md={3}>
+          Going
+          {defaultValues?.data?.attributes?.going?.data.map(goer => (
+              <div>
+                  <p>{goer.attributes.username}</p>
+                  <hr />
+              </div>
+          ))}
+        <Search users={users} selectionHandler={selectionHandler} selected={Going} />
+      </Col>
+    </Row>
     </Container>
   )
 }
