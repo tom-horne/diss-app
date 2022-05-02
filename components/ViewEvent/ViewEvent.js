@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 const ViewEvent = ({ data }) => {
 
-    console.log(data.data);
+    console.log("ViewEvent", data.data);
 
   return (
     <div>

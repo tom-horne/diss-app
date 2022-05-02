@@ -43,6 +43,14 @@ const Dashboard = () => {
                 }
               }
             }
+            attending {
+              data {
+                id
+                attributes {
+                  title
+                }
+              }
+            }
           }
         }
       }
@@ -69,6 +77,12 @@ const Dashboard = () => {
           ) : (
             <p>loading</p>
           )}
+
+          {data ? (
+            <EventCard data={data.usersPermissionsUser.data.attributes.attending} />
+          ) : (
+            <p>loading</p>
+          )}    
         </Col>
 
         <Col md={3}>
