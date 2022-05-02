@@ -8,6 +8,7 @@ import { useSession, signIn, signOut } from "next-auth/client"
 import EditEvent from '../../../components/EditEvent/EditEvent';
 import Search from '../../../components/Search/Search';
 import ViewEvent from '../../../components/ViewEvent/ViewEvent';
+import Messages from '../../../components/Messages/Messages';
 import {useRouter} from 'next/router'
 
 const Event = () => {
@@ -103,7 +104,7 @@ const Event = () => {
     <Row>
 
     <Col md={3}>
-      Left
+      <Messages id={id} />
     </Col>
 
     <Col md={9}>
