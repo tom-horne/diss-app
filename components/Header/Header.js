@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import Link from 'next/link';
 import NavItem from "../NavItem/NavItem";
 import Image from 'next/image'
+import { useRouter, withRouter } from 'next/router'
 import Button from '../Button/Button';
 import { useSession, signIn, signOut } from "next-auth/client"
 import NavButton from "../Button/NavButton";
@@ -124,6 +125,8 @@ const HamburgerButton = {
 
 const Header = () => {
 
+  const router = useRouter();
+
   const [session, loading] = useSession()
 
   const [openDrawer, toggleDrawer] = useState(false);
@@ -140,25 +143,35 @@ const Header = () => {
                 <Link href="/">
                   <a>
                     SocialClub
-                    {/* <Image src={logo} alt="Vercel Logo" width={103} height={94} /> */}
+
                   </a>
                 </Link>
               </div>
 
                 <div>
-                  <NavButton label="Home"/>
-                  <NavButton label="Create"/>
-                  <NavButton label="Calendar"/>
-                  <NavButton label="Invites"/>
+                  <Link href='/dashboard/new'>
+                    <a>
+                    <NavButton router={router.pathname} location='/dashboard/new' label="Create"/>
+                    </a>
+                  </Link>
+                  <Link href='/dashboard'>
+                    <a>
+                    <NavButton router={router.pathname} location='/dashboard' label="Home"/>
+                    </a>
+                  </Link>
+                  <Link href='/calendar'>
+                    <a>
+                    <NavButton router={router.pathname} location='/calendar' label="Calendar"/>
+                    </a>
+                  </Link>
+                  <Link href='/invites'>
+                    <a>
+                    <NavButton router={router.pathname} location='/invites' label="Invites"/>
+                    </a>
+                  </Link>
                 </div>
 
               <NavItems>
-                
-                {/* {data?.data.global?.navigation?.panels && data.data.global.navigation.panels.map(item => (
-                  <NavItem item={item} />
-                ))} */}
-                {/* <Button primary size="large" label="Login" onClick={() => signIn()}/>
-                <Button size="large" label="Sign out" onClick={() => signOut()}/> */}
                 { session ? (
                   <div className="multiButtons">
                     <Button size="large" onClick={() => signOut()} label="Log out" />
@@ -166,17 +179,13 @@ const Header = () => {
                       <Button primary size="large" label="Home" />
                     </Link>
                   </div>
-            ) : (
+                ) : (
                   <div className="multiButtons">
                     <Button primary size="large" onClick={() => signIn()} label="Log in" />
-                    {/* <Button primary size="small" onClick={() => loginWithRedirect({
-                      screen_hint: "signup",
-                    })} label="Sign Up" /> */}
                   </div>
-            )}
+                )}
               </NavItems>
 
-            {/* </Navrow> */}
           </Nav>
           <HamburgerButton.Wrapper onClick={() => toggleChecked(true)}>
             <HamburgerButton.Lines />

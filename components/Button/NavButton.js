@@ -13,12 +13,13 @@ const StyledNavButton = styled.button`
   color: "black";
   height: 75px;
   padding: 0 20px;
+  border-bottom: ${props => props.router == props.location ? "solid 3px black" : "none"};
 `;
 
-const NavButton = ({label}) => {
+const NavButton = ({ label, router, location }) => {
 
   return (
-    <StyledNavButton>{label}</StyledNavButton>
+    <StyledNavButton router={router} location={location}>{label}</StyledNavButton>
   )
 }
 
