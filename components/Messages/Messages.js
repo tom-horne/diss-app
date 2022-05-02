@@ -11,6 +11,14 @@ import Button from '../Button/Button';
 
 const Messages = ({ id }) => {
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            console.log('refresh');
+        }, 3000);
+    
+        return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+        }, [])
+
     const event = id;
 
     
