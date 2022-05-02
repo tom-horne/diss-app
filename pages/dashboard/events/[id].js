@@ -6,6 +6,7 @@ import { graphQLClient } from '../../../utils/graphql-client';
 import Button from '../../../components/Button/Button';
 import { useSession, signIn, signOut } from "next-auth/client"
 import EditEvent from '../../../components/EditEvent/EditEvent';
+import Search from '../../../components/Search/Search';
 import ViewEvent from '../../../components/ViewEvent/ViewEvent';
 import {useRouter} from 'next/router'
 
@@ -43,6 +44,22 @@ const Event = () => {
               description
               date
               time
+              going {
+                data {
+                  id
+                  attributes {
+                    username
+                  }
+                }
+              }
+            }
+          }
+        }
+        usersPermissionsUsers {
+          data {
+            id
+            attributes {
+              username
             }
           }
         }
@@ -82,11 +99,19 @@ const Event = () => {
 
   return (
     <Container>
+
+    <Row>
+
+    <Col md={3}>
+      Left
+    </Col>
+
+    <Col md={9}>
       {data ? (
         <div>
           {you == author ?
             <div>
-              <EditEvent defaultValues={data.event} id={id} />
+              <EditEvent defaultValues={data.event} id={id} users={data?.usersPermissionsUsers.data} />
               <Button size="small" onClick={() => deleteARecipe(id)} label="Delete" />
             </div>  
             : <ViewEvent data={data.event} />
@@ -95,6 +120,8 @@ const Event = () => {
       ) : (
         <p>Loading</p>
       )}
+      </Col>
+      </Row>
     </Container>
   )
 }
