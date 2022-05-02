@@ -41,7 +41,8 @@ const Event = () => {
                 }
               }
               description
-              when
+              date
+              time
             }
           }
         }

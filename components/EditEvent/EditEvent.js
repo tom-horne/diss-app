@@ -21,13 +21,13 @@ const Description = styled.textarea`
 
 const EditEvent = ({ defaultValues, id }) => {
 
-    console.log(defaultValues);
-
     const methods = useForm({
         defaultValues: {
           ...defaultValues,
             title: defaultValues.data.attributes.title,
             description: defaultValues.data.attributes.description,
+            date: defaultValues.data.attributes.date,
+            time: defaultValues.data.attributes.time,
         },
         mode: "onChange",
       });
@@ -37,6 +37,8 @@ const EditEvent = ({ defaultValues, id }) => {
           ...defaultValues,
           title: defaultValues.data.attributes.title,
           description: defaultValues.data.attributes.description,
+          date: defaultValues.data.attributes.date,
+          time: defaultValues.data.attributes.time,
         });
       }, [reset, defaultValues]);
     
@@ -46,18 +48,21 @@ const EditEvent = ({ defaultValues, id }) => {
     
       const { register, control, handleSubmit, reset, formState, errors } = methods
     
-      const onSubmit = handleSubmit(async ({ title, description }, data) => {
+      const onSubmit = handleSubmit(async ({ title, description, date, time }, data) => {
 
         if (errorMessage) setErrorMessage('');
 
+        const newTime = `${time}:00`
+
         const query = gql`
-        mutation UpdateAnEvent($id: ID!, $title: String, $description: String) {
+        mutation UpdateAnEvent($id: ID!, $title: String, $description: String, $date: Date, $newTime: Time) {
             updateEvent(
               id: $id
-                  data: {
-                title: $title
-                description:$description
-
+                data: {
+                    title: $title
+                    description: $description
+                    date: $date
+                    time: $newTime
               }
             ) {
               data {
@@ -68,9 +73,11 @@ const EditEvent = ({ defaultValues, id }) => {
         `;
 
         const variables = {
-        id,
-        title,
-        description,
+            id,
+            title,
+            description,
+            date,
+            newTime
         };
 
         try {
@@ -101,6 +108,20 @@ const EditEvent = ({ defaultValues, id }) => {
                   name="description"
                   placeholder="description"
                   {...register('description', { required: true })}
+                />
+
+                <input 
+                    type="date"
+                    id="date" 
+                    name="date"
+                    {...register('date', { required: true })}
+                />
+
+                <input 
+                    type="time"
+                    id="time" 
+                    name="time"
+                    {...register('time', { required: true })}
                 />
                 
               </Col>
