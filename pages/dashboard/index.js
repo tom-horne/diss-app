@@ -13,7 +13,7 @@ import EventCard from '../../components/EventCard/EventCard';
 const New = styled.div`
   position: absolute;
   right: 1em;
-  bottom: 1em;
+  bottom: 0;
 `;
 
 const Dashboard = () => {
@@ -35,11 +35,11 @@ const Dashboard = () => {
           attributes{
             username
             email
-            events {
+            createdEvents {
               data {
                 id
                 attributes {
-                  Title
+                  title
                 }
               }
             }
@@ -65,7 +65,7 @@ const Dashboard = () => {
           Centre
 
           {data ? (
-            <EventCard data={data} />
+            <EventCard data={data.usersPermissionsUser.data.attributes.createdEvents} />
           ) : (
             <p>loading</p>
           )}

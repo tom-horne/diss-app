@@ -1,7 +1,4 @@
 import React from 'react'
-// import useSWR from 'swr';
-// import { gql } from 'graphql-request';
-// import { graphQLClient } from '../../utils/graphql-client';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -25,16 +22,16 @@ const EventCard = ({ data }) => {
 
   return (
     <>
-      {data?.usersPermissionsUser?.data?.attributes?.events.data.map(event => (
-        <StyledEventCard>
-                <Link href="dashboard/events/[id]" as={`dashboard/events/${event.id}`}>
-                  <a>
-                      <h2>
-                      {event.attributes.Title}
-                      </h2>
-                  </a>
-                </Link>
-        </StyledEventCard>
+      {data?.data.map(event => (
+        <Link href="dashboard/events/[id]" as={`dashboard/events/${event.id}`}>
+          <a>
+            <StyledEventCard>
+              <h2>
+              {event.attributes.title}
+              </h2>
+            </StyledEventCard>
+          </a>
+        </Link>
       ))}
     </>
   )

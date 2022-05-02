@@ -32,8 +32,8 @@ const New = () => {
             mutation CreateAnEvent($id: ID!, $title: String) {
                 createEvent(
                     data: {
-                    Title: $title
-                    users: $id
+                    title: $title
+                    author: $id
                 }
                 ) {
                 data {
