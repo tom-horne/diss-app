@@ -40,6 +40,7 @@ const Dashboard = () => {
                 id
                 attributes {
                   title
+                  description
                 }
               }
             }
@@ -48,6 +49,7 @@ const Dashboard = () => {
                 id
                 attributes {
                   title
+                  description
                 }
               }
             }
@@ -66,11 +68,11 @@ const Dashboard = () => {
       <Row>
 
         <Col md={3}>
-          Left
+          {/* Left */}
         </Col>
 
         <Col md={6}>
-          Centre
+          {/* Centre */}
 
           {data ? (
             <EventCard data={data.usersPermissionsUser.data.attributes.createdEvents} />
@@ -86,17 +88,17 @@ const Dashboard = () => {
         </Col>
 
         <Col md={3}>
-          Right
+          {/* Right */}
         </Col>
       </Row>
 
-      <New>
+      {/* <New>
         <Link href="/dashboard/new">
           <a>
             <Button primary size="large" label="Create new event +" />
           </a>
         </Link>
-      </New>
+      </New> */}
 
     </Container>
   )

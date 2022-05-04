@@ -104,16 +104,19 @@ const Event = () => {
     <Row>
 
     <Col md={3}>
+      Left
       <Messages id={id} />
     </Col>
 
-    <Col md={9}>
+    <Col md={6}>
+      Centre
       {data ? (
         <div>
           {you == author ?
             <div>
-              <EditEvent defaultValues={data.event} id={id} users={data?.usersPermissionsUsers.data} />
               <Button size="small" onClick={() => deleteARecipe(id)} label="Delete" />
+
+              <EditEvent defaultValues={data.event} id={id} users={data?.usersPermissionsUsers.data} />
             </div>  
             : <ViewEvent data={data.event} />
           }
@@ -121,6 +124,14 @@ const Event = () => {
       ) : (
         <p>Loading</p>
       )}
+      </Col>
+
+      <Col md={3}>
+        Right
+
+        {/* <h5>Going</h5>
+        <p>{data?.event?.data?.attributes?.going?.data?.attributes?.username}</p> */}
+
       </Col>
       </Row>
     </Container>

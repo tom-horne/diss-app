@@ -119,71 +119,71 @@ const EditEvent = ({ defaultValues, id, users }) => {
 
   return (
     <Container>
-        <Row>
-      <Col md={6}>
-        <FormProvider {...methods}>
-        <form onSubmit={onSubmit}>
-                <Name
-                  type="text"
-                  name="title"
-                  placeholder="Event name"
-                  {...register('title', { required: true })}
-                />
+                <FormProvider {...methods}>
+                    <form onSubmit={onSubmit}>
+                        <Name
+                            type="text"
+                            name="title"
+                            placeholder="Event name"
+                            {...register('title', { required: true })}
+                        />
 
-                <Description
-                  type="text"
-                  name="description"
-                  placeholder="description"
-                  {...register('description', { required: true })}
-                />
+                        <Description
+                            type="text"
+                            name="description"
+                            placeholder="description"
+                            {...register('description', { required: true })}
+                        />
 
-                <input 
-                    type="date"
-                    id="date" 
-                    name="date"
-                    {...register('date', { required: true })}
-                />
+                        <input 
+                            type="date"
+                            id="date" 
+                            name="date"
+                            {...register('date', { required: true })}
+                        />
 
-                <input 
-                    type="time"
-                    id="time" 
-                    name="time"
-                    step="1"
-                    {...register('time', { required: true })}
-                />
-                
+                        <input 
+                            type="time"
+                            id="time" 
+                            name="time"
+                            step="1"
+                            {...register('time', { required: true })}
+                        />
+                        
 
 
-            {/* {errors.name &&  (
-              <span role="alert">
-                {errors.name.message}
-              </span>
-            )}
-            {errors.description &&  (
-              <span role="alert">
-                {errors.description.message}
-              </span>
-            )}
-            {errorMessage && 
-              <p>{errorMessage}</p>
-            } */}
-          <div>
-            <Button primary type="submit" size="small" label="Save" />
-          </div>
-        </form>
-      </FormProvider>
-      </Col>
-      <Col md={3}>
-          Going
-          {defaultValues?.data?.attributes?.going?.data.map(goer => (
-              <div>
-                  <p>{goer.attributes.username}</p>
-                  <hr />
-              </div>
-          ))}
-        <Search users={users} selectionHandler={selectionHandler} selected={Going} />
-      </Col>
-    </Row>
+                            {/* {errors.name &&  (
+                            <span role="alert">
+                                {errors.name.message}
+                            </span>
+                            )}
+                            {errors.description &&  (
+                            <span role="alert">
+                                {errors.description.message}
+                            </span>
+                            )}
+                            {errorMessage && 
+                            <p>{errorMessage}</p>
+                            } */}
+
+                        <div>
+                            <Button primary type="submit" size="small" label="Save" />
+                        </div>
+
+                    </form>
+                </FormProvider>
+        {/* <Col md={3} offset={3}> */}
+            <h5>Going</h5>
+            {defaultValues?.data?.attributes?.going?.data.map(goer => (
+                <div>
+                    <p>{goer.attributes.username}</p>
+                    <hr />
+                </div>
+            ))}
+         
+            <Search users={users} selectionHandler={selectionHandler} selected={Going} />
+
+        {/* </Col> */}
     </Container>
   )
 }

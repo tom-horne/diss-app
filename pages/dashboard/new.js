@@ -11,6 +11,37 @@ import useSWR from 'swr';
 import { gql } from 'graphql-request';
 import { graphQLClient } from '../../utils/graphql-client';
 
+const CreateEventCard = styled.div`
+  width: 100%;
+  background: white;
+  height: 500px;
+  padding: 10px;
+  /* border-style: solid; */
+  border-radius: 5px;
+  margin-top: 5px;
+  box-shadow: 0 0 5px #d0d0d0;
+  margin: 1em 0;
+  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  input{
+    display: block;
+    border: 0;
+    border-bottom: solid 2px #fd1e61;
+    margin: 0 auto;
+    margin-top: 25%;
+    font-size: 14pt;
+    width: 220px;
+  },
+  Button{
+    align: center;
+    display: block;
+    margin: 0 auto;
+    margin-top: 16px;
+  }
+
+`
+
+
 const New = () => {
 
     const [session, loading] = useSession()
@@ -61,35 +92,50 @@ const New = () => {
 
   return (
     <Container>
-        <h1>New</h1>
-        <form onSubmit={onSubmit}>
-              <div>
-                <label>Event name</label>
-                <input
-                  type="text"
-                  name="title"
-                  placeholder="Event name"
-                  {...register('title', { required: true })}
-                />
- 
-  
-                {/* {errors.name &&  (
-                  <span role="alert">
-                    {errors.name.message}
-                  </span>
-                )}
-                {errors.description &&  (
-                  <span role="alert">
-                    {errors.description.message}
-                  </span>
-                )} */}
-              </div>
+      <Row>
+        <Col md={3}>
 
-              <div>
-                <Button type="submit" primary size="small" label="Create" />
-                {/* <button type="submit">Create</button> */}
-              </div>
-            </form>
+        </Col>
+        <Col md={6}>
+          <CreateEventCard>
+            {/* <h1>New</h1> */}
+              <form onSubmit={onSubmit}>
+                <div>
+                  {/* <label>Event name</label> */}
+                  <input
+                    type="text"
+                    name="title"
+                    placeholder="Enter Event Name Here..."
+                    {...register('title', { required: true })}
+                  />
+  
+    
+                  {/* {errors.name &&  (
+                    <span role="alert">
+                      {errors.name.message}
+                    </span>
+                  )}
+                  {errors.description &&  (
+                    <span role="alert">
+                      {errors.description.message}
+                    </span>
+                  )} */}
+                </div>
+
+                <div className="subButton">
+                  <Button type="submit" primary size="small" label="Create" />
+                  {/* <button type="submit">Create</button> */}
+                </div>
+              </form>
+          </CreateEventCard>
+        </Col>
+        <Col md={3}>
+
+        </Col>
+      </Row>
+
+
+
     </Container>
   )
 }
