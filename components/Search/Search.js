@@ -51,7 +51,7 @@ const Table = ({ list, pattern, onDismiss, selectionHandler, selected }) =>
     {list.filter(isSearched(pattern)).map(person =>
       <div key={person.attributes.username} onClick={() => selectionHandler(person.id)} className="table-row">
         <span style={{ width: '40%' }}>
-            {person.attributes.username}{person.id} {selected.some(e => e == person.id) ? 'yes' : <p></p>}
+            {person.attributes.username}{person.id} {selected.some(e => e == person.id) ? '✅' : <p></p>}
         </span>
       </div>
     )}

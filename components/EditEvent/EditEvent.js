@@ -14,10 +14,22 @@ const Name = styled.input`
   font-size: 2em;
 `;
 
+const StyledEditEvent = styled.div`
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #d0d0d0;
+  width: 100%;
+  height: 500px;
+  padding: 10px;
+`;
+
 const Description = styled.textarea`
   width: 100%;
+  height: 100px;
   border: none;
-  font-size: 2em;
+  font-size: 1em;
+  resize: none;
 `;
 
 const EditEvent = ({ defaultValues, id, users }) => {
@@ -118,8 +130,11 @@ const EditEvent = ({ defaultValues, id, users }) => {
 
 
   return (
-    <Container>
-                <FormProvider {...methods}>
+      <Row>
+            <Col md={8}>
+            {/* <Container> */}
+                <StyledEditEvent>
+            <FormProvider {...methods}>
                     <form onSubmit={onSubmit}>
                         <Name
                             type="text"
@@ -134,6 +149,7 @@ const EditEvent = ({ defaultValues, id, users }) => {
                             placeholder="description"
                             {...register('description', { required: true })}
                         />
+                        <hr style={{}}/>
 
                         <input 
                             type="date"
@@ -172,19 +188,28 @@ const EditEvent = ({ defaultValues, id, users }) => {
 
                     </form>
                 </FormProvider>
-        {/* <Col md={3} offset={3}> */}
+                </StyledEditEvent>
+                {/* </Container> */}
+            </Col>
+            <Col md={4}>
+                {/* <Container> */}
+                right
+                <StyledEditEvent>
             <h5>Going</h5>
-            {defaultValues?.data?.attributes?.going?.data.map(goer => (
-                <div>
-                    <p>{goer.attributes.username}</p>
-                    <hr />
-                </div>
-            ))}
-         
-            <Search users={users} selectionHandler={selectionHandler} selected={Going} />
+                {defaultValues?.data?.attributes?.going?.data.map(goer => (
+                    <div>
+                        <p>{goer.attributes.username}</p>
+                        <hr />
+                    </div>
+                ))}
+            
+                <Search users={users} selectionHandler={selectionHandler} selected={Going} />
+                </StyledEditEvent>
+            {/* </Container> */}
+            </Col>
+        </Row>
+                
 
-        {/* </Col> */}
-    </Container>
   )
 }
 

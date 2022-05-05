@@ -161,7 +161,7 @@ const Header = () => {
                   </Link>
                   <Link href='/calendar'>
                     <a>
-                    <NavButton router={router.pathname} location='/calendar' label="Calendar"/>
+                    <NavButton router={router.pathname} location='/mycalendar' label="My Calendar"/>
                     </a>
                   </Link>
                   <Link href='/invites'>

@@ -26,20 +26,25 @@ const StyledEventCard = styled.div`
 
 const EventCard = ({ data }) => {
 
-  // console.log("EVENtDATA", data);
-
   return (
     <>
       {data?.data.map(event => (
         <Link href="dashboard/events/[id]" as={`dashboard/events/${event.id}`} key={event.id}>
           <a>
             <StyledEventCard>
-              <h3>
-              {event.attributes.title}
-              </h3>
-              <h5>
-              Created by: 
-              </h5>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}>
+                <h3>
+                {event.attributes.title}
+                </h3>
+                <h5>
+                Created by: {event.attributes.author.data.attributes.username}
+                </h5>
+              </div>
               <hr/>
               <p>
               {event.attributes.description}

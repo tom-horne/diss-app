@@ -10,6 +10,17 @@ import Search from '../../../components/Search/Search';
 import ViewEvent from '../../../components/ViewEvent/ViewEvent';
 import Messages from '../../../components/Messages/Messages';
 import {useRouter} from 'next/router'
+import styled from 'styled-components';
+
+const StyledEditEvent = styled.div`
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #d0d0d0;
+  width: 100%;
+  height: 500px;
+  padding: 10px;
+`;
 
 const Event = () => {
 
@@ -108,15 +119,14 @@ const Event = () => {
       <Messages id={id} />
     </Col>
 
-    <Col md={6}>
+    <Col md={9}>
       Centre
       {data ? (
         <div>
           {you == author ?
             <div>
-              <Button size="small" onClick={() => deleteARecipe(id)} label="Delete" />
-
               <EditEvent defaultValues={data.event} id={id} users={data?.usersPermissionsUsers.data} />
+              <Button size="small" onClick={() => deleteARecipe(id)} label="Delete" />
             </div>  
             : <ViewEvent data={data.event} />
           }
@@ -126,13 +136,13 @@ const Event = () => {
       )}
       </Col>
 
-      <Col md={3}>
-        Right
+      {/* <Col md={3}>
+        Right */}
 
-        {/* <h5>Going</h5>
+        {/* <h5>Going</h5> 
         <p>{data?.event?.data?.attributes?.going?.data?.attributes?.username}</p> */}
 
-      </Col>
+      {/* </Col> */}
       </Row>
     </Container>
   )

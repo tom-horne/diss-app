@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useSWR from 'swr';
 import { gql } from 'graphql-request';
 import { graphQLClient } from '../../utils/graphql-client';
 import { Container, Row, Col } from 'react-grid-system';
 import { useSession, signIn, signOut } from "next-auth/client"
 import styled, { css } from 'styled-components';
+import { useRouter } from 'next/router'
 import Button from '../../components/Button/Button';
 import Link from 'next/link';
 import EventCard from '../../components/EventCard/EventCard';
@@ -17,8 +18,15 @@ const New = styled.div`
 `;
 
 const Dashboard = () => {
+  const router = useRouter()
 
   const [session, loading] = useSession()
+
+  useEffect(() => {
+    if (!session) {
+      router.push('/')
+    } 
+}, [session])
 
   const id = session?.id;
   const fetcher = async (query) => await graphQLClient({
@@ -41,6 +49,13 @@ const Dashboard = () => {
                 attributes {
                   title
                   description
+                  author {
+                    data {
+                      attributes {
+                        username
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -50,6 +65,13 @@ const Dashboard = () => {
                 attributes {
                   title
                   description
+                  author {
+                    data {
+                      attributes {
+                        username
+                      }
+                    }
+                  }
                 }
               }
             }
