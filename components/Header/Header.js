@@ -1,17 +1,29 @@
 import React, { useState, useRef, useContext } from "react";
+import Image from "next/image";
 import styled, { css } from 'styled-components';
 import { Container, Row, Col } from 'react-grid-system';
 import Link from 'next/link';
 import NavItem from "../NavItem/NavItem";
-import Image from 'next/image'
 import { useRouter, withRouter } from 'next/router'
 import Button from '../Button/Button';
 import { useSession, signIn, signOut } from "next-auth/client"
 import NavButton from "../Button/NavButton";
 
 const Outer = styled.header`
-  background: #fffafa;
+  background: white;
+  box-shadow: 0 0 5px #d0d0d0;
+`;
 
+const Buttons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 160px;
+`;
+
+const ProfilePic = styled(Image)`
+  object-fit:cover;
+  border-radius:50%;
 `;
 
 const Wrapper = styled.div`
@@ -129,6 +141,8 @@ const Header = () => {
 
   const [session, loading] = useSession()
 
+  console.log("sesssssh", session);
+
   const [openDrawer, toggleDrawer] = useState(false);
   const toggleChecked = () => toggleDrawer(value => !value);
   const drawerRef = useRef(null);
@@ -149,41 +163,43 @@ const Header = () => {
               </div>
 
                 <div>
-                  <Link href='/dashboard/new'>
-                    <a>
-                    <NavButton router={router.pathname} location='/dashboard/new' label="Create"/>
-                    </a>
-                  </Link>
                   <Link href='/dashboard'>
                     <a>
                     <NavButton router={router.pathname} location='/dashboard' label="Home"/>
                     </a>
                   </Link>
+                  <Link href='/dashboard/new'>
+                    <a>
+                    <NavButton router={router.pathname} location='/dashboard/new' label="Create"/>
+                    </a>
+                  </Link>
                   <Link href='/calendar'>
                     <a>
-                    <NavButton router={router.pathname} location='/calendar' label="Calendar"/>
+                    <NavButton router={router.pathname} location='/mycalendar' label="My Calendar"/>
                     </a>
                   </Link>
                   <Link href='/invites'>
                     <a>
-                    <NavButton router={router.pathname} location='/invites' label="Invites"/>
+                    <NavButton router={router.pathname} location='/myevents' label="My Events"/>
                     </a>
                   </Link>
                 </div>
 
               <NavItems>
                 { session ? (
-                  <div className="multiButtons">
-                    <Button size="large" onClick={() => signOut()} label="Log out" />
-                    <Link href={`/[id]`} as={`/dashboard`}>
+                  <Buttons>
+                    <Button primary size="large" onClick={() => signOut()} label="Log out" />
+                    <ProfilePic src={session.user.image} width='30' height='30' />
+                    {/* <Link href={`/[id]`} as={`/dashboard`}>
                       <Button primary size="large" label="Home" />
-                    </Link>
-                  </div>
+                    </Link> */}
+                  </Buttons>
                 ) : (
                   <div className="multiButtons">
                     <Button primary size="large" onClick={() => signIn()} label="Log in" />
                   </div>
                 )}
+
               </NavItems>
 
           </Nav>

@@ -9,11 +9,11 @@ const StyledNavButton = styled.button`
   /* display: inline-block; */
   line-height: 1;
   /* margin-left: 10px; */
-  background-color: #00ff00;
+  background-color: white;
   color: "black";
   height: 75px;
   padding: 0 20px;
-  border-bottom: ${props => props.router == props.location ? "solid 3px black" : "none"};
+  border-bottom: ${props => props.router == props.location ? "solid 3px #fd1e61" : "none"};
 `;
 
 const NavButton = ({ label, router, location }) => {

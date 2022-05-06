@@ -14,10 +14,31 @@ const Name = styled.input`
   font-size: 2em;
 `;
 
+const StyledEditEvent = styled.div`
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #d0d0d0;
+  width: 100%;
+  height: 500px;
+  padding: 10px;
+
+  hr{
+      border: none;
+      border-top: 2px solid #fd1e61;
+  },
+  button{
+      margin-top: 16px;
+      margin-left: 0;
+  }
+`;
+
 const Description = styled.textarea`
   width: 100%;
+  height: 100px;
   border: none;
-  font-size: 2em;
+  font-size: 1em;
+  resize: none;
 `;
 
 const EditEvent = ({ defaultValues, id, users }) => {
@@ -118,73 +139,85 @@ const EditEvent = ({ defaultValues, id, users }) => {
 
 
   return (
-    <Container>
-        <Row>
-      <Col md={6}>
-        <FormProvider {...methods}>
-        <form onSubmit={onSubmit}>
-                <Name
-                  type="text"
-                  name="title"
-                  placeholder="Event name"
-                  {...register('title', { required: true })}
-                />
+      <Row>
+            <Col md={8}>
+            {/* <Container> */}
+                <StyledEditEvent>
+            <FormProvider {...methods}>
+                    <form onSubmit={onSubmit}>
+                        <Name
+                            type="text"
+                            name="title"
+                            placeholder="Event name"
+                            {...register('title', { required: true })}
+                        />
 
-                <Description
-                  type="text"
-                  name="description"
-                  placeholder="description"
-                  {...register('description', { required: true })}
-                />
+                        <Description
+                            type="text"
+                            name="description"
+                            placeholder="description"
+                            {...register('description', { required: true })}
+                        />
+                        <hr style={{}}/>
 
-                <input 
-                    type="date"
-                    id="date" 
-                    name="date"
-                    {...register('date', { required: true })}
-                />
+                        <input 
+                            type="date"
+                            id="date" 
+                            name="date"
+                            {...register('date', { required: true })}
+                        />
 
-                <input 
-                    type="time"
-                    id="time" 
-                    name="time"
-                    step="1"
-                    {...register('time', { required: true })}
-                />
+                        <input 
+                            type="time"
+                            id="time" 
+                            name="time"
+                            step="1"
+                            {...register('time', { required: true })}
+                        />
+                        
+
+
+                            {/* {errors.name &&  (
+                            <span role="alert">
+                                {errors.name.message}
+                            </span>
+                            )}
+                            {errors.description &&  (
+                            <span role="alert">
+                                {errors.description.message}
+                            </span>
+                            )}
+                            {errorMessage && 
+                            <p>{errorMessage}</p>
+                            } */}
+
+                        <div>
+                            <Button primary type="submit" size="small" label="Save" />
+                        </div>
+
+                    </form>
+                </FormProvider>
+                </StyledEditEvent>
+                {/* </Container> */}
+            </Col>
+            <Col md={4}>
+                {/* <Container> */}
+                <StyledEditEvent>
+            <h4>Going</h4>
+                {defaultValues?.data?.attributes?.going?.data.map(goer => (
+                    <div>
+                        <p>{goer.attributes.username}</p>
+                        <hr />
+                    </div>
+                ))}
+            
+                <Search users={users} selectionHandler={selectionHandler} selected={Going} />
+                </StyledEditEvent>
+            {/* </Container> */}
+            </Col>
+        </Row>
                 
 
-
-            {/* {errors.name &&  (
-              <span role="alert">
-                {errors.name.message}
-              </span>
-            )}
-            {errors.description &&  (
-              <span role="alert">
-                {errors.description.message}
-              </span>
-            )}
-            {errorMessage && 
-              <p>{errorMessage}</p>
-            } */}
-          <div>
-            <Button primary type="submit" size="small" label="Save" />
-          </div>
-        </form>
-      </FormProvider>
-      </Col>
-      <Col md={3}>
-          Going
-          {defaultValues?.data?.attributes?.going?.data.map(goer => (
-              <div>
-                  <p>{goer.attributes.username}</p>
-                  <hr />
-              </div>
-          ))}
-        <Search users={users} selectionHandler={selectionHandler} selected={Going} />
-      </Col>
-    </Row>
-    </Container>
   )
 }
 
