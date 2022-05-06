@@ -22,6 +22,15 @@ const StyledEditEvent = styled.div`
   width: 100%;
   height: 500px;
   padding: 10px;
+
+  hr{
+      border: none;
+      border-top: 2px solid #fd1e61;
+  },
+  button{
+      margin-top: 16px;
+      margin-left: 0;
+  }
 `;
 
 const Description = styled.textarea`
@@ -193,9 +202,8 @@ const EditEvent = ({ defaultValues, id, users }) => {
             </Col>
             <Col md={4}>
                 {/* <Container> */}
-                right
                 <StyledEditEvent>
-            <h5>Going</h5>
+            <h4>Going</h4>
                 {defaultValues?.data?.attributes?.going?.data.map(goer => (
                     <div>
                         <p>{goer.attributes.username}</p>

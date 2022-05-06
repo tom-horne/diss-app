@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Container, Row, Col } from 'react-grid-system';
 import useSWR from 'swr';
 import { gql } from 'graphql-request';
@@ -26,9 +26,17 @@ const Event = () => {
 
   const [session, loading] = useSession()
 
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!session) {
+      router.push('/')
+    } 
+}, [session])
+
     const you = session?.id;
     
-    const router = useRouter();
+  // const router = useRouter();
     const { id } = router.query;
 
     const fetcher = async (query) => await graphQLClient({
@@ -115,12 +123,12 @@ const Event = () => {
     <Row>
 
     <Col md={3}>
-      Left
+      {/* Left */}
       <Messages id={id} />
     </Col>
 
     <Col md={9}>
-      Centre
+      {/* Centre */}
       {data ? (
         <div>
           {you == author ?

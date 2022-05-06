@@ -1,9 +1,9 @@
 import React, { useState, useRef, useContext } from "react";
+import Image from "next/image";
 import styled, { css } from 'styled-components';
 import { Container, Row, Col } from 'react-grid-system';
 import Link from 'next/link';
 import NavItem from "../NavItem/NavItem";
-import Image from 'next/image'
 import { useRouter, withRouter } from 'next/router'
 import Button from '../Button/Button';
 import { useSession, signIn, signOut } from "next-auth/client"
@@ -12,6 +12,18 @@ import NavButton from "../Button/NavButton";
 const Outer = styled.header`
   background: white;
   box-shadow: 0 0 5px #d0d0d0;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 160px;
+`;
+
+const ProfilePic = styled(Image)`
+  object-fit:cover;
+  border-radius:50%;
 `;
 
 const Wrapper = styled.div`
@@ -129,6 +141,8 @@ const Header = () => {
 
   const [session, loading] = useSession()
 
+  console.log("sesssssh", session);
+
   const [openDrawer, toggleDrawer] = useState(false);
   const toggleChecked = () => toggleDrawer(value => !value);
   const drawerRef = useRef(null);
@@ -173,17 +187,19 @@ const Header = () => {
 
               <NavItems>
                 { session ? (
-                  <div className="multiButtons">
+                  <Buttons>
                     <Button primary size="large" onClick={() => signOut()} label="Log out" />
+                    <ProfilePic src={session.user.image} width='30' height='30' />
                     {/* <Link href={`/[id]`} as={`/dashboard`}>
                       <Button primary size="large" label="Home" />
                     </Link> */}
-                  </div>
+                  </Buttons>
                 ) : (
                   <div className="multiButtons">
                     <Button primary size="large" onClick={() => signIn()} label="Log in" />
                   </div>
                 )}
+
               </NavItems>
 
           </Nav>

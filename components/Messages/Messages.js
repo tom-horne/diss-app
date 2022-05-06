@@ -11,11 +11,13 @@ import Button from '../Button/Button';
 
 const MessageBox = styled.div`
     width: 100%;
+    height: 500px;
     background-color: white;
     border: none;
     border-radius: 5px;
     box-shadow: 0 0 5px #d0d0d0;
     padding: 10px;
+    margin-top: 16px;
 
     hr{
         margin-bottom: 10px;
@@ -29,7 +31,7 @@ const MessageArea = styled.div`
     bottom: 0;
     overflow-y: scroll;
     /* overflow: auto; */
-    height: 300px;
+    height: 400px;
     background-color: white;
     display: flex;
     flex-direction: column-reverse;

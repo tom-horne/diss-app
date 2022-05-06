@@ -6,7 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import Button from '../../components/Button/Button';
 import { useSession, signIn, signOut } from "next-auth/client"
 import { Container, Row, Col } from 'react-grid-system';
-
+import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { gql } from 'graphql-request';
 import { graphQLClient } from '../../utils/graphql-client';
@@ -44,7 +44,14 @@ const CreateEventCard = styled.div`
 
 const New = () => {
 
+    const router = useRouter()
     const [session, loading] = useSession()
+
+    useEffect(() => {
+      if (!session) {
+        router.push('/')
+      } 
+  }, [session])
 
 
   const [errorMessage, setErrorMessage] = useState('');

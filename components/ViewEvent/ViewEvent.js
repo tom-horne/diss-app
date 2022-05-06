@@ -8,6 +8,7 @@ const StyledEventData = styled.div`
     box-shadow: 0 0 5px #d0d0d0;
     padding: 10px;
     height: 500px;
+    margin-top: 16px;
 
     h1{
         margin: 0;
