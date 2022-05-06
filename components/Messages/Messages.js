@@ -67,15 +67,20 @@ const InputAndButton = styled.div`
     }
 `;
 
+// function useForceUpdate(){
+//     const [value, setValue] = useState(0); // integer state
+//     return () => setValue(value => value + 1); // update the state to force render
+// }
+
 const Messages = ({ id }) => {
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            console.log('refresh');
-        }, 3000);
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         console.log('refresh');
+    //     }, 3000);
     
-        return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-        }, [])
+    //     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    //     }, [])
 
     const event = id;
 
@@ -152,6 +157,8 @@ const Messages = ({ id }) => {
         try {
           const data = await graphQLClient({ query: query, variables: variables });
           Router.reload(window.location.pathname)
+
+        // useForceUpdate
           reset();
         } catch (error) {
           setErrorMessage(error.message);

@@ -28,11 +28,14 @@ const Event = () => {
 
   const router = useRouter()
 
-  useEffect(() => {
-    if (!session) {
-      router.push('/')
-    } 
-}, [session])
+//   useEffect(() => {
+
+//     setTimeout(function() {
+//       if (session) {
+//         router.push('/')
+//       } 
+//     }, 3000);
+// }, [session])
 
     const you = session?.id;
     
@@ -87,8 +90,8 @@ const Event = () => {
     `;
   
     const { data, error } = useSWR(() => id ? query : null, fetcher);
-    console.log(data);
-    console.log(error);
+    // console.log(data);
+    // console.log(error);
 
     const author = data?.event?.data?.attributes?.author?.data?.id
   
