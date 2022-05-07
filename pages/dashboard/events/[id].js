@@ -26,6 +26,8 @@ const Event = () => {
 
   const [session, loading] = useSession()
 
+  const uid = session?.id
+
   const router = useRouter()
 
 //   useEffect(() => {
@@ -46,10 +48,11 @@ const Event = () => {
       query: query,
       variables: {
           id,
+          uid
       },
     });
     const query = gql`
-      query getEvent($id: ID) {
+      query getEvent($id: ID, , $uid: ID) {
         event(id: $id) {
           data {
             id
@@ -65,8 +68,10 @@ const Event = () => {
                 }
               }
               description
-              date
-              time
+              start
+              startTime
+              end
+              endTime
               going {
                 data {
                   id
@@ -78,7 +83,7 @@ const Event = () => {
             }
           }
         }
-        usersPermissionsUsers {
+        usersPermissionsUsers(filters: { id: { not: { eq: $uid }}}) {
           data {
             id
             attributes {

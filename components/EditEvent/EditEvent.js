@@ -50,8 +50,10 @@ const EditEvent = ({ defaultValues, id, users }) => {
           ...defaultValues,
             title: defaultValues.data.attributes.title,
             description: defaultValues.data.attributes.description,
-            date: defaultValues.data.attributes.date,
-            time: defaultValues.data.attributes.time,
+            start: defaultValues.data.attributes.start,
+            startTime: defaultValues.data.attributes.startTime,
+            end: defaultValues.data.attributes.end,
+            endTime: defaultValues.data.attributes.endTime,
         },
         mode: "onChange",
       });
@@ -65,8 +67,10 @@ const EditEvent = ({ defaultValues, id, users }) => {
           ...defaultValues,
           title: defaultValues.data.attributes.title,
           description: defaultValues.data.attributes.description,
-          date: defaultValues.data.attributes.date,
-          time: defaultValues.data.attributes.time,
+          start: defaultValues.data.attributes.start,
+          startTime: defaultValues.data.attributes.startTime,
+          end: defaultValues.data.attributes.end,
+          endTime: defaultValues.data.attributes.endTime,
         });
         addGoing(following)
       }, [reset, defaultValues]);
@@ -76,21 +80,21 @@ const EditEvent = ({ defaultValues, id, users }) => {
     
       const { register, control, handleSubmit, reset, formState, errors } = methods
     
-      const onSubmit = handleSubmit(async ({ title, description, date, time }, data) => {
-
-        console.log("final Going", Going);
+      const onSubmit = handleSubmit(async ({ title, description, start, startTime, end, endTime }, data) => {
 
         if (errorMessage) setErrorMessage('');
 
         const query = gql`
-        mutation UpdateAnEvent($id: ID!, $title: String, $description: String, $date: Date, $time: Time, $Going: [ID]) {
+        mutation UpdateAnEvent($id: ID!, $title: String, $description: String, $start: Date, $startTime: Time, $end: Date, $endTime: Time, $Going: [ID]) {
             updateEvent(
               id: $id
                 data: {
                     title: $title
                     description: $description
-                    date: $date
-                    time: $time
+                    start: $start
+                    startTime: $startTime
+                    end: $end
+                    endTime: $endTime
                     going: $Going
               }
             ) {
@@ -105,8 +109,10 @@ const EditEvent = ({ defaultValues, id, users }) => {
             id,
             title,
             description,
-            date,
-            time,
+            start,
+            startTime,
+            end,
+            endTime,
             Going
         };
 
@@ -132,10 +138,7 @@ const EditEvent = ({ defaultValues, id, users }) => {
             await addGoing(oldArray => [...oldArray, newObj]);
         }
 
-        console.log(Going);
       }
-
-      console.log(defaultValues?.data?.attributes?.going?.data);
 
 
   return (
@@ -160,21 +163,41 @@ const EditEvent = ({ defaultValues, id, users }) => {
                         />
                         <hr style={{}}/>
 
-                        <input 
-                            type="date"
-                            id="date" 
-                            name="date"
-                            {...register('date', { required: true })}
-                        />
+                        <div>
+                          Start
+                          <input 
+                              type="date"
+                              id="start" 
+                              name="start"
+                              {...register('start', { required: true })}
+                          />
 
-                        <input 
-                            type="time"
-                            id="time" 
-                            name="time"
-                            step="1"
-                            {...register('time', { required: true })}
-                        />
-                        
+                          <input 
+                              type="time"
+                              id="startTime" 
+                              name="startTime"
+                              step="1"
+                              {...register('startTime', { required: true })}
+                          />
+                        </div>
+
+                        <div>
+                          End
+                          <input 
+                              type="date"
+                              id="end" 
+                              name="end"
+                              {...register('end', { required: true })}
+                          />
+
+                          <input 
+                              type="time"
+                              id="endTime" 
+                              name="endTime"
+                              step="1"
+                              {...register('endTime', { required: true })}
+                          />
+                        </div>
 
 
                             {/* {errors.name &&  (
