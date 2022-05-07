@@ -44,12 +44,21 @@ const Description = styled.textarea`
 const EditEvent = ({ defaultValues, id, users }) => {
 
     const [Going, addGoing] = useState([])
+    const [AllDay, setAllDay] = useState(false)
+
+    console.log(AllDay);
+
+    const handleChange = (e) => {
+      const { checked } = e.target
+      setAllDay(checked)
+    }
 
     const methods = useForm({
         defaultValues: {
           ...defaultValues,
             title: defaultValues.data.attributes.title,
             description: defaultValues.data.attributes.description,
+            allDay: defaultValues.data.attributes.allDay,
             start: defaultValues.data.attributes.start,
             startTime: defaultValues.data.attributes.startTime,
             end: defaultValues.data.attributes.end,
@@ -67,6 +76,7 @@ const EditEvent = ({ defaultValues, id, users }) => {
           ...defaultValues,
           title: defaultValues.data.attributes.title,
           description: defaultValues.data.attributes.description,
+          allDay: defaultValues.data.attributes.allDay,
           start: defaultValues.data.attributes.start,
           startTime: defaultValues.data.attributes.startTime,
           end: defaultValues.data.attributes.end,
@@ -82,15 +92,18 @@ const EditEvent = ({ defaultValues, id, users }) => {
     
       const onSubmit = handleSubmit(async ({ title, description, start, startTime, end, endTime }, data) => {
 
+        console.log("allDay", AllDay);
+
         if (errorMessage) setErrorMessage('');
 
         const query = gql`
-        mutation UpdateAnEvent($id: ID!, $title: String, $description: String, $start: Date, $startTime: Time, $end: Date, $endTime: Time, $Going: [ID]) {
+        mutation UpdateAnEvent($id: ID!, $title: String, $description: String, $AllDay: Boolean, $start: Date, $startTime: Time, $end: Date, $endTime: Time, $Going: [ID]) {
             updateEvent(
               id: $id
                 data: {
                     title: $title
                     description: $description
+                    allDay: $AllDay
                     start: $start
                     startTime: $startTime
                     end: $end
@@ -109,6 +122,7 @@ const EditEvent = ({ defaultValues, id, users }) => {
             id,
             title,
             description,
+            AllDay,
             start,
             startTime,
             end,
@@ -162,6 +176,15 @@ const EditEvent = ({ defaultValues, id, users }) => {
                             {...register('description', { required: true })}
                         />
                         <hr style={{}}/>
+
+                        <input
+                          type="checkbox"
+                          name="allDay"
+                          // value="allDay"
+                          {...register('allDay')}
+                          onChange={e => handleChange(e)}
+                        />
+                        <label>All day</label>
 
                         <div>
                           Start

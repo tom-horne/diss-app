@@ -68,6 +68,7 @@ const Event = () => {
                 }
               }
               description
+              allDay
               start
               startTime
               end
