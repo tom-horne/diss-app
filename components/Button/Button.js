@@ -11,9 +11,10 @@ const Clicker = styled.button`
   display: inline-block;
   line-height: 1;
   margin-left: 10px;
-  background: ${props => props.primary ? "#fd1e61" : "#eddada"};
+  background: ${props => props.primary ? "#fd1e61" : "none"};
+  border: ${props => props.primary ? "none" : "solid 2px #fd1e61"};
   box-shadow: ${props => props.primary ? "none" : "rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset"};
-  color: ${props => props.primary ? "white" : "#333"};
+  color: ${props => props.primary ? "white" : "black"};
 
   ${({ size }) =>
         size == 'large' &&

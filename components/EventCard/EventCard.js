@@ -42,7 +42,8 @@ const EventCard = ({ data }) => {
                 {event.attributes.title}
                 </h3>
                 <h5>
-                Created by: {event.attributes.author.data.attributes.username}
+                Creator: &nbsp;
+                {event.attributes.author.data.attributes.username}
                 </h5>
               </div>
               <hr/>

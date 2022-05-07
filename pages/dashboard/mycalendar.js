@@ -12,6 +12,19 @@ import {
   } from 'react-big-calendar'
   import 'react-big-calendar/lib/css/react-big-calendar.css'
   import { Container, Row, Col } from 'react-grid-system';
+import styled from 'styled-components';
+
+  const CalendarCard = styled.div`
+    background-color: white;
+    border: 0;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #d0d0d0;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    `;
 
   const now = new Date()
 
@@ -106,7 +119,8 @@ const Mycalendar = () => {
 
 
   return (
-    <Container>
+    <CalendarCard>
+      <Container>
         {data && <Calendar
             localizer={localizer}
             events={newEvents}
@@ -114,7 +128,9 @@ const Mycalendar = () => {
             endAccessor="end"
             style={{ height: 500 }}
         />}
-    </Container>
+      </Container>
+    </CalendarCard>
+
   )
 }
 

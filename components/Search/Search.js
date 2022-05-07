@@ -33,8 +33,10 @@ const Search = ({ value, children, users, selectionHandler, selected }) => {
                     type="text"
                     value={searchTerm}
                     onChange={onSearchChange}
+                    placeholder="Search Users To Add..."
+                    style={{  padding: '10px', width: '100%' }}
                             />
-                </form>
+            </form>
                 { focus &&
                     <Table
                         list={allUsers}
@@ -47,11 +49,12 @@ const Search = ({ value, children, users, selectionHandler, selected }) => {
 }
 
 const Table = ({ list, pattern, onDismiss, selectionHandler, selected }) =>
-  <div className="table">
+  <div className="table" style={{overflow: 'scroll', backgroundColor: '#eddada'}}>
     {list.filter(isSearched(pattern)).map(person =>
-      <div key={person.attributes.username} onClick={() => selectionHandler(person.id)} className="table-row">
+      <div key={person.attributes.username} style={{ marginTop: '10px' }} onClick={() => selectionHandler(person.id)} className="table-row">
         <span style={{ width: '40%' }}>
             {person.attributes.username}{person.id} {selected.some(e => e == person.id) ? '✅' : <p></p>}
+            {/* <hr style={{borderTop: 'solid 2px black !important'}}/> */}
         </span>
       </div>
     )}

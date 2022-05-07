@@ -101,7 +101,7 @@ const Event = () => {
 
     const author = data?.event?.data?.attributes?.author?.data?.id
   
-    const deleteARecipe = async (id) => {
+    const deleteEvent = async (id) => {
       const query = gql`
         mutation CreateAnEvent($id: ID!) {
           deleteEvent(
@@ -143,7 +143,7 @@ const Event = () => {
           {you == author ?
             <div>
               <EditEvent defaultValues={data.event} id={id} users={data?.usersPermissionsUsers.data} />
-              <Button size="small" onClick={() => deleteARecipe(id)} label="Delete" />
+              <Button size="small" onClick={() => deleteEvent(id)} label="Delete Event" style={{marginTop: '10px', marginLeft: '0'}}/>
             </div>  
             : <ViewEvent data={data.event} />
           }

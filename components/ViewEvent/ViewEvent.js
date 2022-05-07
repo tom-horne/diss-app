@@ -12,11 +12,12 @@ const StyledEventData = styled.div`
 
     h1{
         margin: 0;
-    },
-    hr{
-        border: none;
-        border-top: 2px solid #fd1e61
     }
+`;
+
+const Line = styled.hr`
+   border: none;
+   border-top: 2px solid #fd1e61;
 `;
 
 const ViewEvent = ({ data }) => {
@@ -27,7 +28,7 @@ const ViewEvent = ({ data }) => {
     <StyledEventData>
           <h1>{data.data.attributes.title}</h1>
           <p>Organised by: {data.data.attributes.author.data.attributes.username}</p>
-          <hr/>
+          <Line/>
           <p>{data.data.attributes.description}</p>
     </StyledEventData>
   )

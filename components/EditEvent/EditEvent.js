@@ -184,14 +184,15 @@ const EditEvent = ({ defaultValues, id, users }) => {
                           {...register('allDay')}
                           onChange={e => handleChange(e)}
                         />
-                        <label>All day</label>
+                        <label>All Day Event?</label>
 
                         <div>
-                          Start
+                          Start: &nbsp;
                           <input 
                               type="date"
                               id="start" 
                               name="start"
+                              style={{marginTop: '10px'}}
                               {...register('start', { required: true })}
                           />
 
@@ -205,7 +206,7 @@ const EditEvent = ({ defaultValues, id, users }) => {
                         </div>
 
                         <div>
-                          End
+                          End: &nbsp; &nbsp;
                           <input 
                               type="date"
                               id="end" 

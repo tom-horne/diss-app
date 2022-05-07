@@ -9,6 +9,17 @@ import Button from '../Button/Button';
 import { useSession, signIn, signOut } from "next-auth/client"
 import NavButton from "../Button/NavButton";
 
+const Logo = styled.div`
+  font-family: 'Rock Salt', cursive;
+`;
+const LogoMob = styled.div`
+  font-family: 'Rock Salt', cursive;
+  display: none;
+  @media only screen and (max-width: 40em) {
+      display: block;
+    }
+`;
+
 const Outer = styled.header`
   background: white;
   box-shadow: 0 0 5px #d0d0d0;
@@ -35,7 +46,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
 `;
 
 const NavItems = styled.ul`
@@ -153,16 +163,15 @@ const Header = () => {
         <Wrapper>
           <Nav ref={drawerRef} openDrawer={openDrawer}>
               
-              <div>
+              <Logo>
                 <Link href="/">
                   <a>
                     SocialClub
-
                   </a>
                 </Link>
-              </div>
+              </Logo>
 
-                <div>
+                {session && <div>
                   <Link href='/dashboard'>
                     <a>
                     <NavButton router={router.pathname} location='/dashboard' label="Home"/>
@@ -175,20 +184,20 @@ const Header = () => {
                   </Link>
                   <Link href='/dashboard/mycalendar'>
                     <a>
-                    <NavButton router={router.pathname} location='/dashboard/mycalendar' label="My Calendar"/>
+                    <NavButton router={router.pathname} location='/dashboard/mycalendar' label="Calendar"/>
                     </a>
                   </Link>
-                  <Link href='/invites'>
+                  {/* <Link href='/invites'>
                     <a>
                     <NavButton router={router.pathname} location='/myevents' label="My Events"/>
                     </a>
-                  </Link>
-                </div>
+                  </Link> */}
+                </div>}
 
               <NavItems>
                 { session ? (
                   <Buttons>
-                    <Button primary size="large" onClick={() => signOut()} label="Log out" />
+                    <Button size="small" onClick={() => signOut()} label="Log out" />
                     <ProfilePic src={session.user.image} width='30' height='30' />
                     {/* <Link href={`/[id]`} as={`/dashboard`}>
                       <Button primary size="large" label="Home" />
@@ -206,6 +215,10 @@ const Header = () => {
           <HamburgerButton.Wrapper onClick={() => toggleChecked(true)}>
             <HamburgerButton.Lines />
           </HamburgerButton.Wrapper>
+            <LogoMob style={{ justifyContent: 'center', alignItems: 'center'}}>
+              SocialClub
+            </LogoMob>
+            <div></div>
           
         </Wrapper>
       </Container>
