@@ -29,6 +29,8 @@ const Going = styled.div`
   box-shadow: 0 0 5px #d0d0d0;
   padding: 10px;
   margin-top: 16px;
+  min-height: 500px;
+  overflow: scroll;
 `
 
 const ViewEvent = ({ data }) => {
