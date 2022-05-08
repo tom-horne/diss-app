@@ -68,7 +68,7 @@ const EditEvent = ({ defaultValues, id, users }) => {
    }, [Result])
 
    useEffect(() => {
-    if (defaultValues) {    
+    if (defaultValues.data.attributes.location) {    
       setLatitude(defaultValues.data.attributes.location.latitude)
       setLongitude(defaultValues.data.attributes.location.longitude)
     }
