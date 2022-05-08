@@ -57,12 +57,15 @@ const MessageBubble = styled.div`
 `;
 
 const InputAndButton = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
     /* background-color: tomato; */
     width: 100%;
     border: none;
 
     input{
-        width: 78%;
+        width: 100%;
         border: none;
     }
 `;
@@ -180,8 +183,8 @@ const Messages = ({ id }) => {
             </div>
         </MessageArea>
         <form onSubmit={onSubmit}>
-            <InputAndButton>
                 <hr/>
+            <InputAndButton>
                 {/* <label>Event name</label> */}
                 <input
                     type="text"

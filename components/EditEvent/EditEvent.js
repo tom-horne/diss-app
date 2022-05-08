@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import dynamic from 'next/dynamic'
 import { gql } from 'graphql-request';
 import Router from 'next/router';
 import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from 'react-hook-form';
@@ -6,6 +7,7 @@ import styled, { css } from 'styled-components';
 import { graphQLClient } from '../../utils/graphql-client';
 import Button from '../Button/Button';
 import Search from '../Search/Search';
+import { GoogleMap, LoadScript, StandaloneSearchBox, Autocomplete, searchBox, Marker } from '@react-google-maps/api';
 import { Container, Row, Col } from 'react-grid-system';
 
 const Name = styled.input`
@@ -20,7 +22,7 @@ const StyledEditEvent = styled.div`
   border-radius: 5px;
   box-shadow: 0 0 5px #d0d0d0;
   width: 100%;
-  height: 500px;
+  min-height: 500px;
   padding: 10px;
 
   hr{
@@ -41,11 +43,37 @@ const Description = styled.textarea`
   resize: none;
 `;
 
+
+const containerStyle = {
+  // width: '400px',
+  // height: '400px'
+};
+
+const libraries = ["places"]
+
+
 const EditEvent = ({ defaultValues, id, users }) => {
 
     const [Going, addGoing] = useState([])
     const [AllDay, setAllDay] = useState(false)
+   const [Result, setResult] = useState();
+   const [Latitude, setLatitude] = useState(38.685);
+   const [Longitude, setLongitude] = useState(-115.234);
 
+   useEffect(() => {
+     if (Result) {    
+       setLatitude(Result[0].geometry.location.lat())
+       setLongitude(Result[0].geometry.location.lng())
+     }
+   }, [Result])
+
+   useEffect(() => {
+    if (defaultValues) {    
+      setLatitude(defaultValues.data.attributes.location.latitude)
+      setLongitude(defaultValues.data.attributes.location.longitude)
+    }
+  }, [defaultValues])
+   
     console.log(AllDay);
 
     const handleChange = (e) => {
@@ -63,6 +91,9 @@ const EditEvent = ({ defaultValues, id, users }) => {
             startTime: defaultValues.data.attributes.startTime,
             end: defaultValues.data.attributes.end,
             endTime: defaultValues.data.attributes.endTime,
+            location: defaultValues.data.attributes.location,
+            // latitude: defaultValues.data.attributes.location.latitude,
+            // longitude: defaultValues.data.attributes.location.longitude,
         },
         mode: "onChange",
       });
@@ -81,6 +112,9 @@ const EditEvent = ({ defaultValues, id, users }) => {
           startTime: defaultValues.data.attributes.startTime,
           end: defaultValues.data.attributes.end,
           endTime: defaultValues.data.attributes.endTime,
+          location: defaultValues.data.attributes.location,
+          // latitude: defaultValues.data.attributes.location.latitude,
+          // longitude: defaultValues.data.attributes.location.longitude,
         });
         addGoing(following)
       }, [reset, defaultValues]);
@@ -90,14 +124,19 @@ const EditEvent = ({ defaultValues, id, users }) => {
     
       const { register, control, handleSubmit, reset, formState, errors } = methods
     
-      const onSubmit = handleSubmit(async ({ title, description, start, startTime, end, endTime }, data) => {
+      const onSubmit = handleSubmit(async ({ title, description, start, startTime, end, endTime, location }, data) => {
+
+        console.log("loc", location);
+
+        const parsedLatitude = Latitude
+        const parsedLongitude = Longitude
 
         console.log("allDay", AllDay);
 
         if (errorMessage) setErrorMessage('');
 
         const query = gql`
-        mutation UpdateAnEvent($id: ID!, $title: String, $description: String, $AllDay: Boolean, $start: Date, $startTime: Time, $end: Date, $endTime: Time, $Going: [ID]) {
+          mutation UpdateAnEvent($id: ID!, $title: String, $description: String, $AllDay: Boolean, $start: Date, $startTime: Time, $end: Date, $endTime: Time, $parsedLongitude: Float, $parsedLatitude: Float, $Going: [ID]) {
             updateEvent(
               id: $id
                 data: {
@@ -108,6 +147,10 @@ const EditEvent = ({ defaultValues, id, users }) => {
                     startTime: $startTime
                     end: $end
                     endTime: $endTime
+                    location: {
+                      latitude: $parsedLatitude
+                      longitude: $parsedLongitude
+                    }
                     going: $Going
               }
             ) {
@@ -127,6 +170,8 @@ const EditEvent = ({ defaultValues, id, users }) => {
             startTime,
             end,
             endTime,
+            parsedLatitude,
+            parsedLongitude,
             Going
         };
 
@@ -153,6 +198,16 @@ const EditEvent = ({ defaultValues, id, users }) => {
         }
 
       }
+
+
+
+  const onLoadMarker = marker => {
+    console.log('marker: ', marker)
+  }
+
+  const onLoad = ref => searchBox = ref;
+
+  const onPlacesChanged = () => setResult(searchBox.getPlaces());
 
 
   return (
@@ -237,13 +292,71 @@ const EditEvent = ({ defaultValues, id, users }) => {
                             {errorMessage && 
                             <p>{errorMessage}</p>
                             } */}
+                        <div style={{
+                            paddingTop: '1em'
+                        }}>
+
+                        
+                        <LoadScript
+                          googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLEMAPS_API}
+                          libraries={libraries}
+                        >
+                          <GoogleMap
+                            mapContainerStyle={{
+                              width: '100%',
+                              height: '500px',
+                            }}
+                            center={{
+                              lat: Latitude,
+                              lng: Longitude
+                            }}
+                            zoom={15}
+                          >
+                            { /* Child components, such as markers, info windows, etc. */ }
+                            <Marker
+                              onLoad={onLoadMarker}
+                              position={{
+                                lat: Latitude,
+                                lng: Longitude
+                              }}
+                            />
+                            <StandaloneSearchBox
+                              onLoad={onLoad}
+                              onPlacesChanged={
+                                onPlacesChanged
+                              }
+                            >
+                              <input
+                                type="text"
+                                placeholder="Search for your location"
+                                style={{
+                                  boxSizing: `border-box`,
+                                  border: `1px solid transparent`,
+                                  width: `240px`,
+                                  height: `32px`,
+                                  padding: `0 12px`,
+                                  borderRadius: `3px`,
+                                  boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                                  fontSize: `14px`,
+                                  outline: `none`,
+                                  textOverflow: `ellipses`,
+                                  position: "absolute",
+                                  left: "50%",
+                                  marginLeft: "-120px"
+                                }}
+                              />
+                            </StandaloneSearchBox>
+                          </GoogleMap>
+                        </LoadScript>
+                        </div>
 
                         <div>
                             <Button primary type="submit" size="small" label="Save" />
                         </div>
-
                     </form>
                 </FormProvider>
+
+
                 </StyledEditEvent>
                 {/* </Container> */}
             </Col>
