@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components';
 import Map, { Marker } from 'react-map-gl';
+import { Container, Row, Col } from 'react-grid-system';
 
 const StyledEventData = styled.div`
     background-color: white;
@@ -35,8 +36,9 @@ const ViewEvent = ({ data }) => {
     console.log("ViewEvent", data.data);
 
   return (
-    <div>
-          <StyledEventData>
+    <Row>
+      <Col md={8}>
+      <StyledEventData>
           <h1>{data.data.attributes.title}</h1>
           <p>Organised by: {data.data.attributes.author.data.attributes.username}</p>
           <Line/>
@@ -54,20 +56,19 @@ const ViewEvent = ({ data }) => {
             {/* <Marker style={{ margin: '0 !important' }}longitude={data.data.attributes.location.latitude} latitude={data.data.attributes.location.longitude} /> */}
           </Map>}
 
-
-
-      </StyledEventData>
-
-                <Going>
-            <h4>Going:</h4>
-            <p>
-              {data.data.attributes.going.data.map(person => (
-                <p>{person.attributes.username}</p>
-              ))}
-            </p>
-          </Going>
-    </div>
-
+        </StyledEventData>
+      </Col>
+      <Col md={4}>
+        <Going>
+          <h4>Going:</h4>
+          <p>
+            {data.data.attributes.going.data.map(person => (
+              <p>{person.attributes.username}</p>
+            ))}
+          </p>
+        </Going>
+      </Col>
+    </Row>
   )
 }
 
