@@ -1,5 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components';
+import Map, { Marker } from 'react-map-gl';
 
 const StyledEventData = styled.div`
     background-color: white;
@@ -30,6 +31,18 @@ const ViewEvent = ({ data }) => {
           <p>Organised by: {data.data.attributes.author.data.attributes.username}</p>
           <Line/>
           <p>{data.data.attributes.description}</p>
+          {data.data.attributes.location && <Map
+            initialViewState={{
+              longitude: data.data.attributes.location.longitude,
+              latitude: data.data.attributes.location.latitude,
+              zoom: 15
+            }}
+            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_API}
+            style={{width: 600, height: 400}}
+            mapStyle="mapbox://styles/mapbox/streets-v9"
+          >
+            {/* <Marker style={{ margin: '0 !important' }}longitude={data.data.attributes.location.latitude} latitude={data.data.attributes.location.longitude} /> */}
+          </Map>}
     </StyledEventData>
   )
 }

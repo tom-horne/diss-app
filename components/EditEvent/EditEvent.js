@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import dynamic from 'next/dynamic'
 import { gql } from 'graphql-request';
 import Router from 'next/router';
 import { useForm, useFieldArray, Controller, FormProvider, useFormContext } from 'react-hook-form';
@@ -6,6 +7,17 @@ import styled, { css } from 'styled-components';
 import { graphQLClient } from '../../utils/graphql-client';
 import Button from '../Button/Button';
 import Search from '../Search/Search';
+// import MapGL, { FlyToInterpolator } from 'react-map-gl';
+// let Geocoder
+
+// if (typeof window !== 'undefined') { 
+//   Geocoder = require('react-map-gl-geocoder').default; 
+// }
+// const Geocoder = dynamic(() => import("react-map-gl-geocoder"), {
+//   loading: () => "Loading...",
+//   ssr: false
+// });
+// import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { Container, Row, Col } from 'react-grid-system';
 
 const Name = styled.input`
@@ -20,7 +32,7 @@ const StyledEditEvent = styled.div`
   border-radius: 5px;
   box-shadow: 0 0 5px #d0d0d0;
   width: 100%;
-  height: 500px;
+  min-height: 500px;
   padding: 10px;
 
   hr{
@@ -46,6 +58,32 @@ const EditEvent = ({ defaultValues, id, users }) => {
     const [Going, addGoing] = useState([])
     const [AllDay, setAllDay] = useState(false)
 
+    const [viewport, setViewport] = useState({
+      latitude: 37.7577,
+      longitude: -122.4376,
+      zoom: 8
+    });
+    const mapRef = useRef();
+    const handleViewportChange = useCallback(
+      (newViewport) => setViewport(newViewport),
+      []
+    );
+  
+    // if you are happy with Geocoder default settings, you can just use handleViewportChange directly
+    const handleGeocoderViewportChange = useCallback(
+      (newViewport) => {
+        const geocoderDefaultOverrides = { transitionDuration: 1000 };
+        FlyToInterpolator()
+  
+        return handleViewportChange({
+          ...newViewport,
+          ...geocoderDefaultOverrides
+        });
+      },
+      [handleViewportChange]
+    );
+  
+
     console.log(AllDay);
 
     const handleChange = (e) => {
@@ -63,6 +101,9 @@ const EditEvent = ({ defaultValues, id, users }) => {
             startTime: defaultValues.data.attributes.startTime,
             end: defaultValues.data.attributes.end,
             endTime: defaultValues.data.attributes.endTime,
+            location: defaultValues.data.attributes.location,
+            // latitude: defaultValues.data.attributes.location.latitude,
+            // longitude: defaultValues.data.attributes.location.longitude,
         },
         mode: "onChange",
       });
@@ -81,6 +122,9 @@ const EditEvent = ({ defaultValues, id, users }) => {
           startTime: defaultValues.data.attributes.startTime,
           end: defaultValues.data.attributes.end,
           endTime: defaultValues.data.attributes.endTime,
+          location: defaultValues.data.attributes.location,
+          // latitude: defaultValues.data.attributes.location.latitude,
+          // longitude: defaultValues.data.attributes.location.longitude,
         });
         addGoing(following)
       }, [reset, defaultValues]);
@@ -90,14 +134,19 @@ const EditEvent = ({ defaultValues, id, users }) => {
     
       const { register, control, handleSubmit, reset, formState, errors } = methods
     
-      const onSubmit = handleSubmit(async ({ title, description, start, startTime, end, endTime }, data) => {
+      const onSubmit = handleSubmit(async ({ title, description, start, startTime, end, endTime, location }, data) => {
+
+        console.log("loc", location);
+
+        const parsedLatitude = Number(location.latitude)
+        const parsedLongitude = Number(location.longitude)
 
         console.log("allDay", AllDay);
 
         if (errorMessage) setErrorMessage('');
 
         const query = gql`
-        mutation UpdateAnEvent($id: ID!, $title: String, $description: String, $AllDay: Boolean, $start: Date, $startTime: Time, $end: Date, $endTime: Time, $Going: [ID]) {
+          mutation UpdateAnEvent($id: ID!, $title: String, $description: String, $AllDay: Boolean, $start: Date, $startTime: Time, $end: Date, $endTime: Time, $parsedLongitude: Float, $parsedLatitude: Float, $Going: [ID]) {
             updateEvent(
               id: $id
                 data: {
@@ -108,6 +157,10 @@ const EditEvent = ({ defaultValues, id, users }) => {
                     startTime: $startTime
                     end: $end
                     endTime: $endTime
+                    location: {
+                      latitude: $parsedLatitude
+                      longitude: $parsedLongitude
+                    }
                     going: $Going
               }
             ) {
@@ -127,6 +180,8 @@ const EditEvent = ({ defaultValues, id, users }) => {
             startTime,
             end,
             endTime,
+            parsedLatitude,
+            parsedLongitude,
             Going
         };
 
@@ -223,6 +278,29 @@ const EditEvent = ({ defaultValues, id, users }) => {
                           />
                         </div>
 
+                        <div>
+                          Location: &nbsp; &nbsp;
+                          <br />
+
+                          Latitude:
+                          <input 
+                              type="text"
+                              id="latitude" 
+                              name="latitude"
+                              step="0.01"
+                              {...register('location.latitude', { required: true })}
+                          />
+
+                          Longitude
+                          <input 
+                              type="text"
+                              id="longitude" 
+                              name="longitude"
+                              step="0.01"
+                              {...register('location.longitude', { required: true })}
+                          />
+                        </div>
+
 
                             {/* {errors.name &&  (
                             <span role="alert">
@@ -244,6 +322,8 @@ const EditEvent = ({ defaultValues, id, users }) => {
 
                     </form>
                 </FormProvider>
+
+
                 </StyledEditEvent>
                 {/* </Container> */}
             </Col>

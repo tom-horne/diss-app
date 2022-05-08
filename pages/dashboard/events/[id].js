@@ -67,6 +67,10 @@ const Event = () => {
                   }
                 }
               }
+              location {
+                longitude
+                latitude
+              }
               description
               allDay
               start
