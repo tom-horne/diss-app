@@ -8,7 +8,7 @@ const StyledEventData = styled.div`
     border-radius: 5px;
     box-shadow: 0 0 5px #d0d0d0;
     padding: 10px;
-    height: 500px;
+    min-height: 500px;
     margin-top: 16px;
 
     h1{
@@ -17,16 +17,26 @@ const StyledEventData = styled.div`
 `;
 
 const Line = styled.hr`
-   border: none;
-   border-top: 2px solid #fd1e61;
+  border: none;
+  border-top: 2px solid #fd1e61;
 `;
+
+const Going = styled.div`
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #d0d0d0;
+  padding: 10px;
+  margin-top: 16px;
+`
 
 const ViewEvent = ({ data }) => {
 
     console.log("ViewEvent", data.data);
 
   return (
-    <StyledEventData>
+    <div>
+          <StyledEventData>
           <h1>{data.data.attributes.title}</h1>
           <p>Organised by: {data.data.attributes.author.data.attributes.username}</p>
           <Line/>
@@ -38,12 +48,26 @@ const ViewEvent = ({ data }) => {
               zoom: 15
             }}
             mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_API}
-            style={{width: 600, height: 400}}
+            style={{width: '100%', height: '100%'}}
             mapStyle="mapbox://styles/mapbox/streets-v9"
           >
             {/* <Marker style={{ margin: '0 !important' }}longitude={data.data.attributes.location.latitude} latitude={data.data.attributes.location.longitude} /> */}
           </Map>}
-    </StyledEventData>
+
+
+
+      </StyledEventData>
+
+                <Going>
+            <h4>Going:</h4>
+            <p>
+              {data.data.attributes.going.data.map(person => (
+                <p>{person.attributes.username}</p>
+              ))}
+            </p>
+          </Going>
+    </div>
+
   )
 }
 

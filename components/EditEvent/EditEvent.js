@@ -7,17 +7,7 @@ import styled, { css } from 'styled-components';
 import { graphQLClient } from '../../utils/graphql-client';
 import Button from '../Button/Button';
 import Search from '../Search/Search';
-// import MapGL, { FlyToInterpolator } from 'react-map-gl';
-// let Geocoder
-
-// if (typeof window !== 'undefined') { 
-//   Geocoder = require('react-map-gl-geocoder').default; 
-// }
-// const Geocoder = dynamic(() => import("react-map-gl-geocoder"), {
-//   loading: () => "Loading...",
-//   ssr: false
-// });
-// import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import { GoogleMap, LoadScript, StandaloneSearchBox, Autocomplete, searchBox, Marker } from '@react-google-maps/api';
 import { Container, Row, Col } from 'react-grid-system';
 
 const Name = styled.input`
@@ -53,37 +43,37 @@ const Description = styled.textarea`
   resize: none;
 `;
 
+
+const containerStyle = {
+  // width: '400px',
+  // height: '400px'
+};
+
+const libraries = ["places"]
+
+
 const EditEvent = ({ defaultValues, id, users }) => {
 
     const [Going, addGoing] = useState([])
     const [AllDay, setAllDay] = useState(false)
+   const [Result, setResult] = useState();
+   const [Latitude, setLatitude] = useState(38.685);
+   const [Longitude, setLongitude] = useState(-115.234);
 
-    const [viewport, setViewport] = useState({
-      latitude: 37.7577,
-      longitude: -122.4376,
-      zoom: 8
-    });
-    const mapRef = useRef();
-    const handleViewportChange = useCallback(
-      (newViewport) => setViewport(newViewport),
-      []
-    );
-  
-    // if you are happy with Geocoder default settings, you can just use handleViewportChange directly
-    const handleGeocoderViewportChange = useCallback(
-      (newViewport) => {
-        const geocoderDefaultOverrides = { transitionDuration: 1000 };
-        FlyToInterpolator()
-  
-        return handleViewportChange({
-          ...newViewport,
-          ...geocoderDefaultOverrides
-        });
-      },
-      [handleViewportChange]
-    );
-  
+   useEffect(() => {
+     if (Result) {    
+       setLatitude(Result[0].geometry.location.lat())
+       setLongitude(Result[0].geometry.location.lng())
+     }
+   }, [Result])
 
+   useEffect(() => {
+    if (defaultValues) {    
+      setLatitude(defaultValues.data.attributes.location.latitude)
+      setLongitude(defaultValues.data.attributes.location.longitude)
+    }
+  }, [defaultValues])
+   
     console.log(AllDay);
 
     const handleChange = (e) => {
@@ -138,8 +128,8 @@ const EditEvent = ({ defaultValues, id, users }) => {
 
         console.log("loc", location);
 
-        const parsedLatitude = Number(location.latitude)
-        const parsedLongitude = Number(location.longitude)
+        const parsedLatitude = Latitude
+        const parsedLongitude = Longitude
 
         console.log("allDay", AllDay);
 
@@ -210,6 +200,16 @@ const EditEvent = ({ defaultValues, id, users }) => {
       }
 
 
+
+  const onLoadMarker = marker => {
+    console.log('marker: ', marker)
+  }
+
+  const onLoad = ref => searchBox = ref;
+
+  const onPlacesChanged = () => setResult(searchBox.getPlaces());
+
+
   return (
       <Row>
             <Col md={8}>
@@ -278,29 +278,6 @@ const EditEvent = ({ defaultValues, id, users }) => {
                           />
                         </div>
 
-                        <div>
-                          Location: &nbsp; &nbsp;
-                          <br />
-
-                          Latitude:
-                          <input 
-                              type="text"
-                              id="latitude" 
-                              name="latitude"
-                              step="0.01"
-                              {...register('location.latitude', { required: true })}
-                          />
-
-                          Longitude
-                          <input 
-                              type="text"
-                              id="longitude" 
-                              name="longitude"
-                              step="0.01"
-                              {...register('location.longitude', { required: true })}
-                          />
-                        </div>
-
 
                             {/* {errors.name &&  (
                             <span role="alert">
@@ -315,11 +292,67 @@ const EditEvent = ({ defaultValues, id, users }) => {
                             {errorMessage && 
                             <p>{errorMessage}</p>
                             } */}
+                        <div style={{
+                            paddingTop: '1em'
+                        }}>
+
+                        
+                        <LoadScript
+                          googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLEMAPS_API}
+                          libraries={libraries}
+                        >
+                          <GoogleMap
+                            mapContainerStyle={{
+                              width: '100%',
+                              height: '500px',
+                            }}
+                            center={{
+                              lat: Latitude,
+                              lng: Longitude
+                            }}
+                            zoom={15}
+                          >
+                            { /* Child components, such as markers, info windows, etc. */ }
+                            <Marker
+                              onLoad={onLoadMarker}
+                              position={{
+                                lat: Latitude,
+                                lng: Longitude
+                              }}
+                            />
+                            <StandaloneSearchBox
+                              onLoad={onLoad}
+                              onPlacesChanged={
+                                onPlacesChanged
+                              }
+                            >
+                              <input
+                                type="text"
+                                placeholder="Search for your location"
+                                style={{
+                                  boxSizing: `border-box`,
+                                  border: `1px solid transparent`,
+                                  width: `240px`,
+                                  height: `32px`,
+                                  padding: `0 12px`,
+                                  borderRadius: `3px`,
+                                  boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                                  fontSize: `14px`,
+                                  outline: `none`,
+                                  textOverflow: `ellipses`,
+                                  position: "absolute",
+                                  left: "50%",
+                                  marginLeft: "-120px"
+                                }}
+                              />
+                            </StandaloneSearchBox>
+                          </GoogleMap>
+                        </LoadScript>
+                        </div>
 
                         <div>
                             <Button primary type="submit" size="small" label="Save" />
                         </div>
-
                     </form>
                 </FormProvider>
 
