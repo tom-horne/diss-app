@@ -43,8 +43,21 @@ const ViewEvent = ({ data }) => {
       <StyledEventData>
           <h1>{data.data.attributes.title}</h1>
           <p>Organised by: {data.data.attributes.author.data.attributes.username}</p>
-          <Line/>
           <p>{data.data.attributes.description}</p>
+          <Line/>
+
+          <div>
+            <p style={{display: 'inline-block'}}>Start Date: &nbsp;</p>
+              {data.data.attributes.start} &nbsp; &nbsp; &nbsp; 
+            <p style={{display: 'inline-block'}}>End Date: &nbsp; </p>
+              {data.data.attributes.end} 
+          </div>
+
+          <div>
+            <p style={{display: 'inline-block'}}>Start Time: {data.data.attributes.startTime} &nbsp; &nbsp;  </p>
+            <p style={{display: 'inline-block'}}>End Time: {data.data.attributes.endTime}</p>
+          </div>
+
           <div style={{ height: '500px'}}>
             {data.data.attributes.location && <Map
               initialViewState={{
