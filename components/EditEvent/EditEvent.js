@@ -122,7 +122,7 @@ const EditEvent = ({ defaultValues, id, users }) => {
       const [errorMessage, setErrorMessage] = useState('');
     
     
-      const { register, control, handleSubmit, reset, formState, errors } = methods
+      const { register, control, handleSubmit, reset, formState: { errors } } = methods
     
       const onSubmit = handleSubmit(async ({ title, description, start, startTime, end, endTime, location }, data) => {
 
@@ -221,15 +221,18 @@ const EditEvent = ({ defaultValues, id, users }) => {
                             type="text"
                             name="title"
                             placeholder="Event name"
-                            {...register('title', { required: true })}
+                            {...register('title', { required: true, maxLength: 40 })}
                         />
+                          {errors.title && errors.title.type === "maxLength" && <span>Max length exceeded</span> }
+
 
                         <Description
                             type="text"
                             name="description"
                             placeholder="description"
-                            {...register('description', { required: true })}
+                            {...register('description', { required: true, maxLength: 700 })}
                         />
+                         {errors.description && errors.description.type === "maxLength" && <span>Max length exceeded</span> }
                         <hr style={{}}/>
 
                         <input
@@ -279,9 +282,9 @@ const EditEvent = ({ defaultValues, id, users }) => {
                         </div>
 
 
-                            {/* {errors.name &&  (
+                             {errors.title &&  (
                             <span role="alert">
-                                {errors.name.message}
+                                {errors.title.message}
                             </span>
                             )}
                             {errors.description &&  (
@@ -291,7 +294,8 @@ const EditEvent = ({ defaultValues, id, users }) => {
                             )}
                             {errorMessage && 
                             <p>{errorMessage}</p>
-                            } */}
+                            } 
+
                         <div style={{
                             paddingTop: '1em'
                         }}>

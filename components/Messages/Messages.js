@@ -124,7 +124,7 @@ const Messages = ({ id }) => {
 
     const [errorMessage, setErrorMessage] = useState('');
 
-    const { handleSubmit, register, errors, control, reset } = useForm({
+    const { handleSubmit, register, formState: { errors }, control, reset } = useForm({
         mode: "onChange"
       });
 
@@ -190,8 +190,10 @@ const Messages = ({ id }) => {
                     type="text"
                     name="message"
                     placeholder="Message..."
-                    {...register('message', { required: true })}
+                    {...register('message', { required: true, maxLength: 320 })}
                 />
+                  {errors.message && errors.message.type === "maxLength" && <span>Max length exceeded</span> }
+
 
 
                 {/* {errors.name &&  (
