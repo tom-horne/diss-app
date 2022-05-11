@@ -56,7 +56,7 @@ const New = () => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-    const { handleSubmit, register, errors, control } = useForm({
+    const { handleSubmit, register, formState: { errors }, control } = useForm({
         mode: "onChange"
       });
 
@@ -107,26 +107,27 @@ const New = () => {
           <CreateEventCard>
             {/* <h1>New</h1> */}
               <form onSubmit={onSubmit}>
-                <div>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                   {/* <label>Event name</label> */}
                   <input
                     type="text"
                     name="title"
                     placeholder="Enter Event Name Here..."
-                    {...register('title', { required: true })}
+                    {...register('title', { required: true, maxLength: 40 })}
                   />
+                    {errors.title && errors.title.type === "maxLength" && <span>Max length exceeded</span> }
+
   
-    
-                  {/* {errors.name &&  (
+                  {/* {errors.title &&  (
                     <span role="alert">
-                      {errors.name.message}
+                      {errors.title.message}
                     </span>
                   )}
-                  {errors.description &&  (
-                    <span role="alert">
-                      {errors.description.message}
-                    </span>
-                  )} */}
+                  {errorMessage && 
+                    <p>{errorMessage}</p>
+                  }  */}
+
+
                 </div>
 
                 <div className="subButton">
